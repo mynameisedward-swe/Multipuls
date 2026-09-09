@@ -1,5 +1,5 @@
 {
-  "version": "v3",
+  "version": "v3.1",
   "method": "Deterministic Node VM tests with parsed markup, a minimal DOM double and stubbed device-sharing APIs. No browser execution or real messages sent.",
   "tests": [
     {
@@ -184,6 +184,54 @@
     },
     {
       "name": "V3 · Session keys are stable across releases and separate applications on the same host",
+      "status": "PASS"
+    },
+    {
+      "name": "V3.1 · Tapping the question mark reveals the answer and records one miss, with no mastery credit",
+      "status": "PASS"
+    },
+    {
+      "name": "V3.1 · Revealing after two correct answers resets the pair streak instead of mastering it",
+      "status": "PASS"
+    },
+    {
+      "name": "V3.1 · Repeated reveals and cancelled question callbacks cannot score twice or affect the next question",
+      "status": "PASS"
+    },
+    {
+      "name": "V3.1 · Reveal is unavailable while entering an answer, paused or in Settings",
+      "status": "PASS"
+    },
+    {
+      "name": "V3.1 · Reveal respects the actual deadline and also works without a time limit",
+      "status": "PASS"
+    },
+    {
+      "name": "V3.1 · Combination modes cover the intended pairs and preserve the original default",
+      "status": "PASS"
+    },
+    {
+      "name": "V3.1 · Settings changes the active pool immediately and every generated question respects it",
+      "status": "PASS"
+    },
+    {
+      "name": "V3.1 · Switching modes retains history for pairs temporarily excluded from practice",
+      "status": "PASS"
+    },
+    {
+      "name": "V3.1 · The selected mode survives reload and reset along with the existing choices",
+      "status": "PASS"
+    },
+    {
+      "name": "V3.1 · An actual v3 saved session upgrades without losing settings, statistics or pair history",
+      "status": "PASS"
+    },
+    {
+      "name": "V3.1 · Both-selected practice reaches mastery and results with a single selected number",
+      "status": "PASS"
+    },
+    {
+      "name": "V3.1 · Both new controls and feedback are translated in all 13 existing languages",
       "status": "PASS"
     },
     {

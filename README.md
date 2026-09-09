@@ -1,8 +1,16 @@
-# Multipuls v3
+# Multipuls v3.1
 
 A complete static multiplication trainer, prepared for GitHub Pages and installation on a phone. No build step, backend, account system, API keys or package installation is needed to publish it.
 
-This release starts from the v2.3 interface: the freestanding green X, mint app name, matching Settings/Share controls, 13 languages, and the start-style pause screen. It adds durable session storage and offline support.
+This release starts from the complete v3 package and changes only the three requested behaviors, plus release versions, tests and documentation. The existing design, icons, keypad, adaptive weighting, pause flow, sharing and storage remain in place.
+
+## Changes in v3.1
+
+1. Tap the **?** in the answer field during a question to reveal the correct answer. It records one missed question, resets that pair's streak, and gives no correct-answer or mastery credit. The usual feedback interval then advances to the next question. The control is unavailable while paused, in Settings, or while digits are entered; delete the digits to show **?** again.
+2. Under the table buttons, **Combinations** offers **At least one selected** (the existing default: the other number can be 1–10) or **Both selected**. Selecting 6, 7, 8 and 9 gives 34 unique pairs in the original mode or 10 unique pairs in the new mode. Switching modes preserves history, scores and settings. Existing v3 sessions restore in the original mode.
+3. The page now declares its dark color scheme before loading CSS and gives the body an explicit `#111c1e` background, matching the existing page/manifest theme colors. Existing safe-area padding and edge-to-edge viewport support are retained. This gives Android the applicable web color hints; an exact match for the system navigation bar, especially in three-button mode, cannot be guaranteed or verified here. The browser and operating system control system surfaces. [Color-scheme guidance](https://web.dev/articles/color-scheme), [Chrome's Android edge-to-edge behavior](https://developer.chrome.com/docs/css-ui/edge-to-edge), [Manifest theme-color behavior](https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps/Manifest/Reference/theme_color).
+
+To update an existing GitHub Pages deployment, upload the extracted contents into the same repository root, replacing the previous release files, and commit. Open the app online and reload to check the **v3.1** label. The service-worker cache and asset URLs are versioned for this update; the installed app identity and saved-session key are unchanged. Do not clear site data to update, because it contains your saved round.
 
 ## Deploy on GitHub Pages
 
@@ -18,7 +26,7 @@ The ZIP contents match the repository structure directly; there is no extra encl
 
 ## First published check
 
-Confirm that **v3** appears beside the app name. Play a few questions, change a setting, pause, and reload: the saved round should offer **Continue playing / Fortsätt spela** with your scores and choices intact. Share should open the device's sharing sheet with the app link, or copy just the link if native sharing is unavailable.
+Confirm that **v3.1** appears beside the app name. Play a few questions, change a setting, pause, and reload: the saved round should offer **Continue playing / Fortsätt spela** with your scores and choices intact. Tap **?** on a fresh question and check that it shows the answer without adding a correct answer. Try both combination modes with a small table selection. Share should open the device's sharing sheet with the app link, or copy just the link if native sharing is unavailable. On Android, check the bottom system bar in both the browser and installed app.
 
 Open the site online once and allow its initial loading to finish. Reload it once while online, then try it in airplane mode: the app should load and let you play offline. Sharing a link to another person naturally still needs whatever connection the selected messaging app uses.
 
@@ -28,7 +36,7 @@ Repeat the pause, close/reopen and offline checks from the Home Screen app. Safa
 
 ## Sessions and settings
 
-The app saves after answers, new questions and settings changes. Snapshots include selected tables, difficulty, mastery goal, language, overall statistics, every pair's streak/errors/response times, and history for temporarily deselected tables. The unfinished question is deliberately excluded. Reopening an active round therefore returns paused with no timeout penalty and no added response time. A completed round restores its results screen.
+The app saves after answers, new questions and settings changes. Snapshots include selected tables, combination mode, difficulty, mastery goal, language, overall statistics, every pair's streak/errors/response times, and history for temporarily deselected tables or excluded pairs. The unfinished question is deliberately excluded. Reopening an active round therefore returns paused with no timeout penalty and no added response time. A completed round restores its results screen.
 
 Reset starts a new saved round while keeping language and training choices. If browser storage is unavailable, the app continues to work and tells the user that it cannot save. Unreadable or newer saved formats are preserved until an explicit reset. Data is local to this browser/app context; it is not uploaded to GitHub or synchronized between devices. Clearing site data removes saved progress.
 
@@ -71,7 +79,7 @@ node tests/verify-app.cjs
 node tests/verify-pwa.cjs
 ```
 
-**65/65 automated checks passed:** 53 training, storage and integration checks plus 12 release/service-worker checks. This includes a full standard round, stale callbacks, reload during a question and during feedback, restored mastery/history/settings, reset, native-sharing fallbacks, real script boot order, relative deployment paths, offline navigation, cached assets and safe cache cleanup.
+**78/78 automated checks passed:** 65 training, storage and integration checks plus 13 release/service-worker checks. The original 65 checks remain, with release-version assertions updated. Added checks cover revealing without credit, streak resets, duplicate/replayed callbacks, timeout races, combination pools, mode changes and persistence, a saved-session fixture produced by the unchanged v3 code, completion with a single selected pair, translations in all 13 languages, and consistent dark page/startup hints. Existing checks cover the complete standard round, pause/reset, sharing, script boot order, offline behavior and safe cache cleanup.
 
 The tests execute the shipped JavaScript with a deterministic clock, a minimal DOM double, simulated storage/sharing, and an in-memory service-worker environment. They do not send messages or make network requests. Browser testing could not be run in this environment because the browser's URL policy blocked the preview route; that restriction was not bypassed. Actual Chromium/Safari rendering, native sharing and iPhone installation remain the short post-deployment checks above.
 

@@ -216,13 +216,13 @@ test("14 · Full default round: all 55 mastered after 165 correct; result metric
 });
 test("15 · Every requested DOM reference and accessible ID resolves",()=>{
   const app=makeApp();const ids=new Set();function walk(node){if(node.id){assert(!ids.has(node.id));ids.add(node.id);}for(const child of node.children)walk(child);}walk(app.doc.root);
-  function check(node){for(const name of ["for","aria-controls","aria-labelledby"]){const id=node.getAttribute(name);if(id)for(const part of id.split(" "))assert(ids.has(part),"Missing target "+part);}for(const child of node.children)check(child);}check(app.doc.root);
+  function check(node){for(const name of ["for","aria-controls","aria-labelledby","aria-describedby"]){const id=node.getAttribute(name);if(id)for(const part of id.split(" "))assert(ids.has(part),"Missing target "+part);}for(const child of node.children)check(child);}check(app.doc.root);
 });
 test("16 · JavaScript parses; real page uses local files and no fixed or viewport-height layout",()=>{
   new vm.Script(source);assert(html.startsWith("<!doctype html>"));
   assert(!/\b(localStorage|sessionStorage|indexedDB|fetch|XMLHttpRequest|WebSocket)\b|navigator\.(share|clipboard|sendBeacon)/.test(source));
   assert(!/position\s*:\s*fixed|\b\d+(?:d|s|l)?vh\b/i.test(styles+source));
-  assert(html.includes('./manifest.webmanifest?v=3'));assert(html.includes('./app.js?v=3'));
+  assert(html.includes('./manifest.webmanifest?v=3.1"'));assert(html.includes('./app.js?v=3.1"'));
 });
 test("Additional · No time limit, keyboard digits/backspace/Enter, one-digit and 100 answers",()=>{
   const app=makeApp();app.get("settings-toggle").click();app.get("difficulty").value="none";app.get("difficulty").dispatch("change");app.get("back-settings").click();app.get("start").click();assert.equal(app.get("time-label").textContent,"∞");assert.equal(app.time.tasks.size,0);
@@ -385,7 +385,7 @@ asyncTest("V2.2 · Unpublished files cannot share a guessed or preview URL",asyn
 
 const {createStore}=require("../storage.js");
 function memoryStorage(){const entries=new Map();return{entries,getItem:key=>entries.has(key)?entries.get(key):null,setItem:(key,value)=>entries.set(key,String(value))};}
-const sessionURL="https://example.test/Multipuls/?v=3";
+const sessionURL="https://example.test/Multipuls/?v=3.1";
 function savedApp(memory,language=["sv-SE"]){return makeApp(language,null,createStore(memory,sessionURL));}
 
 test("V3 · Settings survive closing before the first game and do not start a countdown",()=>{
@@ -446,6 +446,95 @@ test("V3 · Session keys are stable across releases and separate applications on
   one.write({schema:1,value:7});assert.equal(two.read().value,7);assert.equal(notes.read(),null);
 });
 
+test("V3.1 · Tapping the question mark reveals the answer and records one miss, with no mastery credit",()=>{
+  const memory=memoryStorage(),app=savedApp(memory),mark=app.get("answer");
+  assert.equal(mark.tagName,"BUTTON");assert.equal(mark.getAttribute("type"),"button");assert(mark.disabled);
+  app.get("start").click();assert(!mark.disabled);assert.equal(mark.getAttribute("aria-label"),I18N.sv.revealAnswer);
+  const expected=app.expected(),key=app.pairKey();app.time.advance(250);mark.click();
+  assert.equal(mark.textContent,String(expected));assert(mark.disabled);assert.equal(app.get("feedback-title").textContent,I18N.sv.answerRevealed);
+  assert.equal(app.get("feedback-detail").textContent,"Rätt svar: "+expected);assert.equal(app.get("mastered").textContent,"0");
+  const saved=createStore(memory,sessionURL).read().training,pair=saved.history.find(pair=>pair.key===key);
+  assert.equal(saved.stats.correct,0);assert.equal(saved.stats.wrong,1);assert.equal(saved.stats.questions,1);assert.deepEqual(saved.stats.responseTimes,[250]);
+  assert.equal(pair.wrong,1);assert.equal(pair.streak,0);assert(pairWeight(pair,saved.turn,3,6000)>pairWeight({...pair,wrong:0,lastWrongTurn:null},saved.turn,3,6000));
+  const reopened=savedApp(memory);assertPausedView(reopened);assert.equal(reopened.get("accuracy").textContent,"0%");
+});
+function chooseOnly(app,table){
+  for(const button of app.get("tables").children)if(Number(button.dataset.table)!==table && button.getAttribute("aria-pressed")==="true")button.click();
+}
+function changeFactorMode(app,mode){app.get("factor-mode").value=mode;app.get("factor-mode").dispatch("change");}
+test("V3.1 · Revealing after two correct answers resets the pair streak instead of mastering it",()=>{
+  const memory=memoryStorage(),app=savedApp(memory);app.get("settings-toggle").click();chooseOnly(app,7);changeFactorMode(app,"both");app.get("back-settings").click();
+  app.get("start").click();app.answer(49);app.time.advance(800);app.answer(49);app.time.advance(800);app.get("answer").click();
+  const saved=createStore(memory,sessionURL).read().training,pair=saved.history.find(pair=>pair.key==="7:7");
+  assert.equal(saved.stats.correct,2);assert.equal(saved.stats.wrong,1);assert.equal(saved.stats.streak,0);assert.equal(pair.streak,0);assert.equal(app.get("mastered").textContent,"0");
+  app.time.advance(1050);assert(app.get("results").hidden);assert.equal(app.expected(),49);
+});
+test("V3.1 · Repeated reveals and cancelled question callbacks cannot score twice or affect the next question",()=>{
+  const memory=memoryStorage(),app=savedApp(memory);app.get("start").click();const stale=[...app.time.archive];app.time.advance(5950);app.get("answer").click();
+  app.get("answer").dispatch("click");stale.forEach(callback=>callback());assert.equal(createStore(memory,sessionURL).read().training.stats.questions,1);
+  app.time.advance(1050);const key=app.pairKey();stale.forEach(callback=>callback());
+  assert.equal(app.pairKey(),key);assert.equal(app.get("question-card").dataset.result,"");assert.equal(app.get("time-label").textContent,"6,0 s");
+  app.answer();assert.equal(createStore(memory,sessionURL).read().training.stats.questions,2);assert.equal(app.get("accuracy").textContent,"50%");
+});
+test("V3.1 · Reveal is unavailable while entering an answer, paused or in Settings",()=>{
+  const memory=memoryStorage(),app=savedApp(memory);app.get("answer").dispatch("click");app.get("start").click();app.key(7).click();
+  assert(app.get("answer").disabled);app.get("answer").dispatch("click");assert.equal(app.get("question-card").dataset.result,"");
+  app.key("backspace").click();assert(!app.get("answer").disabled);app.get("pause").click();assert(app.get("answer").disabled);app.get("answer").dispatch("click");
+  app.get("settings-toggle").click();app.get("answer").dispatch("click");assert.equal(createStore(memory,sessionURL).read().training.stats.questions,0);assert.equal(app.time.tasks.size,0);
+});
+test("V3.1 · Reveal respects the actual deadline and also works without a time limit",()=>{
+  const late=makeApp();late.get("start").click();late.time.time=6000;late.get("answer").click();assert.equal(late.get("question-card").dataset.result,"timeout");assert.equal(late.get("accuracy").textContent,"0%");
+  const app=makeApp();app.get("settings-toggle").click();app.get("difficulty").value="none";app.get("difficulty").dispatch("change");app.get("back-settings").click();app.get("start").click();
+  const expected=app.expected();app.time.advance(60000);app.get("answer").click();assert.equal(app.get("answer").textContent,String(expected));assert.equal(app.get("feedback-title").textContent,I18N.sv.answerRevealed);
+});
+test("V3.1 · Combination modes cover the intended pairs and preserve the original default",()=>{
+  const selected=[6,7,8,9],any=createPairs(selected),both=createPairs(selected,"both");
+  assert.equal(DEFAULTS.factorMode,"any");assert.equal(normalizeConfig({tables:[7],difficulty:"normal",goal:3}).factorMode,"any");
+  assert.equal(any.length,34);assert.equal(any.reduce((sum,pair)=>sum+pair.variants.length,0),40);assert(any.some(pair=>pair.key==="1:7"));
+  assert.equal(both.length,10);assert.equal(both.reduce((sum,pair)=>sum+pair.variants.length,0),16);assert(both.every(pair=>pair.variants.every(([a,b])=>selected.includes(a)&&selected.includes(b))));
+  assert.equal(createPairs([7],"both")[0].key,"7:7");assert.equal(createPairs([7],"both").length,1);assert.equal(createPairs(DEFAULTS.tables,"both").length,55);
+  assert.throws(()=>normalizeConfig({...DEFAULTS,factorMode:"invalid"}));
+});
+test("V3.1 · Settings changes the active pool immediately and every generated question respects it",()=>{
+  const app=makeApp();app.get("settings-toggle").click();assert.equal(app.get("factor-mode").value,"any");app.get("select-hard").click();
+  assert.equal(app.get("selection-count").textContent,"34 unika par");changeFactorMode(app,"both");assert.equal(app.get("selection-count").textContent,"10 unika par");
+  app.get("back-settings").click();app.get("start").click();
+  for(let i=0;i<25;i++){const numbers=app.get("equation").children.filter((_,i)=>i!==1).map(element=>Number(element.textContent));assert(numbers.every(n=>[6,7,8,9].includes(n)));app.answer(0);app.time.advance(1050);}
+  app.get("settings-toggle").click();changeFactorMode(app,"any");assert.equal(app.get("selection-count").textContent,"34 unika par");assert.equal(app.time.tasks.size,0);
+});
+test("V3.1 · Switching modes retains history for pairs temporarily excluded from practice",()=>{
+  const training=new Training({...DEFAULTS,tables:[7]},()=>0);const q=training.next();assert.equal(q.pair.key,"1:7");training.score(q.id,7,275);
+  const before=JSON.stringify(training.stats),pairBefore=JSON.stringify(training.snapshot().history.find(pair=>pair.key==="1:7"));
+  training.reconfigure({...training.config,factorMode:"both"});assert.equal(training.pairs.length,1);assert.equal(training.pairs[0].key,"7:7");
+  const restored=new Training();restored.restore(JSON.parse(JSON.stringify(training.snapshot())));restored.reconfigure({...restored.config,factorMode:"any"});
+  assert.equal(JSON.stringify(restored.stats),before);assert.equal(JSON.stringify(restored.snapshot().history.find(pair=>pair.key==="1:7")),pairBefore);
+});
+test("V3.1 · The selected mode survives reload and reset along with the existing choices",()=>{
+  const memory=memoryStorage(),first=savedApp(memory);first.get("settings-toggle").click();first.get("select-hard").click();changeFactorMode(first,"both");first.get("back-settings").click();first.get("start").click();first.answer();
+  const second=savedApp(memory);assertPausedView(second);assert.equal(second.get("factor-mode").value,"both");assert.equal(second.get("total").textContent,"10");assert.equal(second.get("streak").textContent,"1");
+  second.get("settings-toggle").click();second.get("reset").click();const third=savedApp(memory);assert.equal(third.get("factor-mode").value,"both");assert.equal(third.get("total").textContent,"10");assert.equal(third.get("accuracy").textContent,"—");
+});
+test("V3.1 · An actual v3 saved session upgrades without losing settings, statistics or pair history",()=>{
+  const fixture=JSON.parse(fs.readFileSync(path.join(__dirname,"fixtures/v3-session.json"),"utf8"));assert(!Object.hasOwn(fixture.training.config,"factorMode"));
+  const memory=memoryStorage(),store=createStore(memory,sessionURL);memory.setItem(store.key,JSON.stringify(fixture));const app=savedApp(memory);
+  assertPausedView(app);assert(app.get("save-notice").hidden);assert.equal(app.get("factor-mode").value,"any");assert.equal(app.get("total").textContent,"34");assert.equal(app.get("difficulty").value,"hard");
+  const upgraded=store.read();assert.deepEqual(upgraded.training.stats,fixture.training.stats);assert.deepEqual(upgraded.training.history,fixture.training.history);assert.equal(upgraded.training.config.factorMode,"any");
+  app.get("start").click();app.answer();assert.equal(store.read().training.stats.correct,fixture.training.stats.correct+1);
+});
+test("V3.1 · Both-selected practice reaches mastery and results with a single selected number",()=>{
+  const app=makeApp();app.get("settings-toggle").click();chooseOnly(app,7);changeFactorMode(app,"both");app.get("back-settings").click();app.get("start").click();
+  for(let i=0;i<3;i++){assert.equal(app.expected(),49);app.answer(49);app.time.advance(i===2?1000:800);}
+  assert(!app.get("results").hidden);assert.equal(app.get("result-questions").textContent,"3");assert.equal(app.get("mastered").textContent,"1");assert.equal(app.time.tasks.size,0);
+});
+test("V3.1 · Both new controls and feedback are translated in all 13 existing languages",()=>{
+  for(const language of Object.keys(LANGUAGE_NAMES)){
+    const app=makeApp([language]);app.get("settings-toggle").click();const options=app.get("factor-mode").children;
+    assert.equal(options[0].textContent,I18N[language].factorAny);assert.equal(options[1].textContent,I18N[language].factorBoth);assert.equal(app.get("factor-hint").textContent,I18N[language].factorAnyHint);
+    changeFactorMode(app,"both");assert.equal(app.get("factor-hint").textContent,I18N[language].factorBothHint);app.get("back-settings").click();app.get("start").click();
+    assert.equal(app.get("answer").getAttribute("aria-label"),I18N[language].revealAnswer);app.get("answer").click();assert.equal(app.get("feedback-title").textContent,I18N[language].answerRevealed);
+  }
+});
+
 asyncTest("V3 · Real script boot order installs persistence, native sharing and the service worker",async()=>{
   const memory=memoryStorage(),shared=[],registered=[];let updated=0;
   const web={href:sessionURL,storage:memory,navigator:{
@@ -461,7 +550,7 @@ asyncTest("V3 · Real script boot order installs persistence, native sharing and
 async function finishTests(){
   for(const {name,fn} of asyncTests){try{await fn();reports.push({name,status:"PASS"});}catch(error){reports.push({name,status:"FAIL",message:error.stack});}}
   for(const report of reports)console.log(report.status+" "+report.name+(report.message?"\n"+report.message:""));
-  fs.writeFileSync(path.join(__dirname,"training-results.json"),JSON.stringify({version:"v3",method:"Deterministic Node VM tests with parsed markup, a minimal DOM double and stubbed device-sharing APIs. No browser execution or real messages sent.",tests:reports},null,2));
+  fs.writeFileSync(path.join(__dirname,"training-results.json"),JSON.stringify({version:"v3.1",method:"Deterministic Node VM tests with parsed markup, a minimal DOM double and stubbed device-sharing APIs. No browser execution or real messages sent.",tests:reports},null,2));
   const failed=reports.filter(report=>report.status==="FAIL").length;console.log("\n"+(reports.length-failed)+"/"+reports.length+" passed");if(failed)process.exitCode=1;
 }
 finishTests().catch(error=>{console.error(error);process.exitCode=1;});

@@ -1,0 +1,345 @@
+{
+  "schema": 1,
+  "language": "sv",
+  "phase": "paused",
+  "training": {
+    "config": {
+      "tables": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "difficulty": "hard",
+      "goal": 3
+    },
+    "sequence": 4,
+    "turn": 4,
+    "previousKey": "4:7",
+    "stats": {
+      "questions": 3,
+      "correct": 2,
+      "wrong": 1,
+      "streak": 0,
+      "best": 2,
+      "responseTimes": [
+        1000,
+        1500,
+        2000
+      ]
+    },
+    "history": [
+      {
+        "key": "1:6",
+        "correct": 0,
+        "wrong": 0,
+        "streak": 0,
+        "responseTimes": [],
+        "lastSeenTurn": 0,
+        "lastWrongTurn": null
+      },
+      {
+        "key": "2:6",
+        "correct": 0,
+        "wrong": 0,
+        "streak": 0,
+        "responseTimes": [],
+        "lastSeenTurn": 0,
+        "lastWrongTurn": null
+      },
+      {
+        "key": "3:6",
+        "correct": 0,
+        "wrong": 0,
+        "streak": 0,
+        "responseTimes": [],
+        "lastSeenTurn": 0,
+        "lastWrongTurn": null
+      },
+      {
+        "key": "4:6",
+        "correct": 0,
+        "wrong": 0,
+        "streak": 0,
+        "responseTimes": [],
+        "lastSeenTurn": 0,
+        "lastWrongTurn": null
+      },
+      {
+        "key": "5:6",
+        "correct": 0,
+        "wrong": 0,
+        "streak": 0,
+        "responseTimes": [],
+        "lastSeenTurn": 0,
+        "lastWrongTurn": null
+      },
+      {
+        "key": "6:6",
+        "correct": 0,
+        "wrong": 0,
+        "streak": 0,
+        "responseTimes": [],
+        "lastSeenTurn": 0,
+        "lastWrongTurn": null
+      },
+      {
+        "key": "6:7",
+        "correct": 0,
+        "wrong": 0,
+        "streak": 0,
+        "responseTimes": [],
+        "lastSeenTurn": 0,
+        "lastWrongTurn": null
+      },
+      {
+        "key": "6:8",
+        "correct": 0,
+        "wrong": 0,
+        "streak": 0,
+        "responseTimes": [],
+        "lastSeenTurn": 0,
+        "lastWrongTurn": null
+      },
+      {
+        "key": "6:9",
+        "correct": 0,
+        "wrong": 0,
+        "streak": 0,
+        "responseTimes": [],
+        "lastSeenTurn": 0,
+        "lastWrongTurn": null
+      },
+      {
+        "key": "6:10",
+        "correct": 0,
+        "wrong": 0,
+        "streak": 0,
+        "responseTimes": [],
+        "lastSeenTurn": 0,
+        "lastWrongTurn": null
+      },
+      {
+        "key": "1:7",
+        "correct": 0,
+        "wrong": 0,
+        "streak": 0,
+        "responseTimes": [],
+        "lastSeenTurn": 0,
+        "lastWrongTurn": null
+      },
+      {
+        "key": "2:7",
+        "correct": 0,
+        "wrong": 0,
+        "streak": 0,
+        "responseTimes": [],
+        "lastSeenTurn": 0,
+        "lastWrongTurn": null
+      },
+      {
+        "key": "3:7",
+        "correct": 1,
+        "wrong": 1,
+        "streak": 0,
+        "responseTimes": [
+          1000,
+          2000
+        ],
+        "lastSeenTurn": 3,
+        "lastWrongTurn": 3
+      },
+      {
+        "key": "4:7",
+        "correct": 1,
+        "wrong": 0,
+        "streak": 1,
+        "responseTimes": [
+          1500
+        ],
+        "lastSeenTurn": 4,
+        "lastWrongTurn": null
+      },
+      {
+        "key": "5:7",
+        "correct": 0,
+        "wrong": 0,
+        "streak": 0,
+        "responseTimes": [],
+        "lastSeenTurn": 0,
+        "lastWrongTurn": null
+      },
+      {
+        "key": "7:7",
+        "correct": 0,
+        "wrong": 0,
+        "streak": 0,
+        "responseTimes": [],
+        "lastSeenTurn": 0,
+        "lastWrongTurn": null
+      },
+      {
+        "key": "7:8",
+        "correct": 0,
+        "wrong": 0,
+        "streak": 0,
+        "responseTimes": [],
+        "lastSeenTurn": 0,
+        "lastWrongTurn": null
+      },
+      {
+        "key": "7:9",
+        "correct": 0,
+        "wrong": 0,
+        "streak": 0,
+        "responseTimes": [],
+        "lastSeenTurn": 0,
+        "lastWrongTurn": null
+      },
+      {
+        "key": "7:10",
+        "correct": 0,
+        "wrong": 0,
+        "streak": 0,
+        "responseTimes": [],
+        "lastSeenTurn": 0,
+        "lastWrongTurn": null
+      },
+      {
+        "key": "1:8",
+        "correct": 0,
+        "wrong": 0,
+        "streak": 0,
+        "responseTimes": [],
+        "lastSeenTurn": 0,
+        "lastWrongTurn": null
+      },
+      {
+        "key": "2:8",
+        "correct": 0,
+        "wrong": 0,
+        "streak": 0,
+        "responseTimes": [],
+        "lastSeenTurn": 0,
+        "lastWrongTurn": null
+      },
+      {
+        "key": "3:8",
+        "correct": 0,
+        "wrong": 0,
+        "streak": 0,
+        "responseTimes": [],
+        "lastSeenTurn": 0,
+        "lastWrongTurn": null
+      },
+      {
+        "key": "4:8",
+        "correct": 0,
+        "wrong": 0,
+        "streak": 0,
+        "responseTimes": [],
+        "lastSeenTurn": 0,
+        "lastWrongTurn": null
+      },
+      {
+        "key": "5:8",
+        "correct": 0,
+        "wrong": 0,
+        "streak": 0,
+        "responseTimes": [],
+        "lastSeenTurn": 0,
+        "lastWrongTurn": null
+      },
+      {
+        "key": "8:8",
+        "correct": 0,
+        "wrong": 0,
+        "streak": 0,
+        "responseTimes": [],
+        "lastSeenTurn": 0,
+        "lastWrongTurn": null
+      },
+      {
+        "key": "8:9",
+        "correct": 0,
+        "wrong": 0,
+        "streak": 0,
+        "responseTimes": [],
+        "lastSeenTurn": 0,
+        "lastWrongTurn": null
+      },
+      {
+        "key": "8:10",
+        "correct": 0,
+        "wrong": 0,
+        "streak": 0,
+        "responseTimes": [],
+        "lastSeenTurn": 0,
+        "lastWrongTurn": null
+      },
+      {
+        "key": "1:9",
+        "correct": 0,
+        "wrong": 0,
+        "streak": 0,
+        "responseTimes": [],
+        "lastSeenTurn": 0,
+        "lastWrongTurn": null
+      },
+      {
+        "key": "2:9",
+        "correct": 0,
+        "wrong": 0,
+        "streak": 0,
+        "responseTimes": [],
+        "lastSeenTurn": 0,
+        "lastWrongTurn": null
+      },
+      {
+        "key": "3:9",
+        "correct": 0,
+        "wrong": 0,
+        "streak": 0,
+        "responseTimes": [],
+        "lastSeenTurn": 0,
+        "lastWrongTurn": null
+      },
+      {
+        "key": "4:9",
+        "correct": 0,
+        "wrong": 0,
+        "streak": 0,
+        "responseTimes": [],
+        "lastSeenTurn": 0,
+        "lastWrongTurn": null
+      },
+      {
+        "key": "5:9",
+        "correct": 0,
+        "wrong": 0,
+        "streak": 0,
+        "responseTimes": [],
+        "lastSeenTurn": 0,
+        "lastWrongTurn": null
+      },
+      {
+        "key": "9:9",
+        "correct": 0,
+        "wrong": 0,
+        "streak": 0,
+        "responseTimes": [],
+        "lastSeenTurn": 0,
+        "lastWrongTurn": null
+      },
+      {
+        "key": "9:10",
+        "correct": 0,
+        "wrong": 0,
+        "streak": 0,
+        "responseTimes": [],
+        "lastSeenTurn": 0,
+        "lastWrongTurn": null
+      }
+    ]
+  }
+}

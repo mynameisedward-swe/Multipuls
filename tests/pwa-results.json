@@ -1,5 +1,5 @@
 {
-  "version": "v3",
+  "version": "v3.1",
   "method": "Static release checks and deterministic service-worker event tests with real Response/Request objects and in-memory Cache/Fetch doubles. No browser or network execution.",
   "tests": [
     {
@@ -48,6 +48,10 @@
     },
     {
       "name": "PWA 12 · Cache and precache URLs follow the registered project subdirectory",
+      "status": "PASS"
+    },
+    {
+      "name": "PWA 13 · Dark page and startup hints agree with the existing theme and safe-area layout",
       "status": "PASS"
     }
   ]

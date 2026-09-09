@@ -3,7 +3,7 @@
 
   // 1. Configuration and canonical fact pairs. Variants always respect selected tables.
   const LEVELS = Object.freeze({none: {label: "Ingen tidsgräns", ms: 0}, easy: {label: "Lätt", ms: 10000}, normal: {label: "Normal", ms: 6000}, hard: {label: "Svår", ms: 4000}, expert: {label: "Expert", ms: 2500}});
-  const DEFAULTS = Object.freeze({tables: [1,2,3,4,5,6,7,8,9,10], difficulty: "normal", goal: 3});
+  const DEFAULTS = Object.freeze({tables: [1,2,3,4,5,6,7,8,9,10], difficulty: "normal", goal: 3, factorMode: "any"});
   const LANGUAGE_NAMES={"en": "English", "sv": "Svenska", "es": "Español", "de": "Deutsch", "fr": "Français", "it": "Italiano", "pt": "Português", "nl": "Nederlands", "pl": "Polski", "ru": "Русский", "ja": "日本語", "ko": "한국어", "zh": "中文"};
   const I18N={
   "en": {
@@ -883,11 +883,15 @@
     const tables = [...new Set(config.tables)].sort((a,b) => a-b);
     if (!tables.length || tables.some(n => !Number.isInteger(n) || n < 1 || n > 10)) throw new Error("Välj minst en giltig tabell.");
     if (!Object.hasOwn(LEVELS, config.difficulty) || ![2,3,4,5].includes(config.goal)) throw new Error("Ogiltiga träningsval.");
-    return {tables, difficulty: config.difficulty, goal: config.goal};
+    // Older saved rounds have no factorMode and keep the original question pool.
+    const factorMode=config.factorMode===undefined ? "any" : config.factorMode;
+    if (!["any","both"].includes(factorMode)) throw new Error("Ogiltiga kombinationer.");
+    return {tables, difficulty: config.difficulty, goal: config.goal, factorMode};
   }
-  function createPairs(tables) {
+  function createPairs(tables, factorMode="any") {
     const pairs = new Map();
     for (const a of tables) for (let b=1; b<=10; b++) {
+      if (factorMode==="both" && !tables.includes(b)) continue;
       const low = Math.min(a,b), high = Math.max(a,b), key = low + ":" + high;
       if (!pairs.has(key)) pairs.set(key, {key, a: low, b: high, variants: [], correct: 0, wrong: 0, streak: 0, mastered: false, responseTimes: [], lastSeenTurn: 0, lastWrongTurn: null});
       pairs.get(key).variants.push([a,b]);
@@ -921,7 +925,7 @@
   class Training {
     constructor(config=DEFAULTS, random=Math.random) { this.random=random; this.sequence=0; this.reset(config); }
     reset(config=this.config) {
-      this.config=normalizeConfig(config); this.pairs=createPairs(this.config.tables);
+      this.config=normalizeConfig(config); this.pairs=createPairs(this.config.tables,this.config.factorMode);
       this.history=new Map(this.pairs.map(pair=>[pair.key,pair]));
       this.current=null; this.previousKey=null; this.turn=0;
       this.stats={questions:0,correct:0,wrong:0,streak:0,best:0,responseTimes:[]};
@@ -934,7 +938,7 @@
       this.config=normalizeConfig(config);
       this.discardCurrent();
       for (const pair of this.history.values()) pair.mastered=pair.streak>=this.config.goal;
-      this.pairs=createPairs(this.config.tables).map(fresh=>{
+      this.pairs=createPairs(this.config.tables,this.config.factorMode).map(fresh=>{
         const pair=this.history.get(fresh.key) || fresh;
         pair.variants=fresh.variants;
         pair.mastered=pair.streak>=this.config.goal;
@@ -1079,6 +1083,48 @@
   for (const [language,values] of Object.entries(STORAGE_TEXT)) {
     I18N[language].storageUnavailable=values[0];I18N[language].storageInvalid=values[1];
   }
+  const PRACTICE_TEXT={
+    en:{combinations:"Combinations",factorAny:"At least one selected",factorBoth:"Both selected",
+      factorAnyHint:"The other number can be any number from 1 to 10.",factorBothHint:"Both numbers come from your selection.",
+      revealAnswer:"Show the answer; count as missed",answerRevealed:"ANSWER SHOWN"},
+    sv:{combinations:"Kombinationer",factorAny:"Minst ett valt tal",factorBoth:"Båda talen valda",
+      factorAnyHint:"Det andra talet kan vara vilket som helst från 1 till 10.",factorBothHint:"Båda talen tas från ditt urval.",
+      revealAnswer:"Visa svaret; räknas som fel",answerRevealed:"SVARET VISAT"},
+    es:{combinations:"Combinaciones",factorAny:"Al menos uno elegido",factorBoth:"Los dos elegidos",
+      factorAnyHint:"El otro número puede ser cualquiera del 1 al 10.",factorBothHint:"Los dos números deben estar seleccionados.",
+      revealAnswer:"Mostrar la respuesta; cuenta como error",answerRevealed:"RESPUESTA MOSTRADA"},
+    de:{combinations:"Kombinationen",factorAny:"Mindestens eine ausgewählt",factorBoth:"Beide ausgewählt",
+      factorAnyHint:"Die andere Zahl kann eine beliebige Zahl von 1 bis 10 sein.",factorBothHint:"Beide Zahlen stammen aus deiner Auswahl.",
+      revealAnswer:"Antwort anzeigen; zählt als Fehler",answerRevealed:"ANTWORT ANGEZEIGT"},
+    fr:{combinations:"Combinaisons",factorAny:"Au moins un choisi",factorBoth:"Les deux choisis",
+      factorAnyHint:"L’autre nombre peut être n’importe lequel de 1 à 10.",factorBothHint:"Les deux nombres font partie de ta sélection.",
+      revealAnswer:"Afficher la réponse ; compte comme une erreur",answerRevealed:"RÉPONSE AFFICHÉE"},
+    it:{combinations:"Combinazioni",factorAny:"Almeno uno selezionato",factorBoth:"Entrambi selezionati",
+      factorAnyHint:"L’altro numero può essere qualsiasi numero da 1 a 10.",factorBothHint:"Entrambi i numeri fanno parte della tua selezione.",
+      revealAnswer:"Mostra la risposta; conta come errore",answerRevealed:"RISPOSTA MOSTRATA"},
+    pt:{combinations:"Combinações",factorAny:"Pelo menos um escolhido",factorBoth:"Ambos escolhidos",
+      factorAnyHint:"O outro número pode ser qualquer um de 1 a 10.",factorBothHint:"Os dois números vêm da sua seleção.",
+      revealAnswer:"Mostrar a resposta; conta como erro",answerRevealed:"RESPOSTA MOSTRADA"},
+    nl:{combinations:"Combinaties",factorAny:"Minstens één gekozen",factorBoth:"Beide gekozen",
+      factorAnyHint:"Het andere getal kan elk getal van 1 tot en met 10 zijn.",factorBothHint:"Beide getallen komen uit je selectie.",
+      revealAnswer:"Toon het antwoord; telt als fout",answerRevealed:"ANTWOORD GETOOND"},
+    pl:{combinations:"Kombinacje",factorAny:"Co najmniej jedna wybrana",factorBoth:"Obie wybrane",
+      factorAnyHint:"Druga liczba może być dowolną liczbą od 1 do 10.",factorBothHint:"Obie liczby pochodzą z twojego wyboru.",
+      revealAnswer:"Pokaż odpowiedź; liczy się jako błąd",answerRevealed:"ODPOWIEDŹ POKAZANA"},
+    ru:{combinations:"Комбинации",factorAny:"Хотя бы одно выбрано",factorBoth:"Оба выбраны",
+      factorAnyHint:"Второе число может быть любым от 1 до 10.",factorBothHint:"Оба числа входят в ваш выбор.",
+      revealAnswer:"Показать ответ; засчитывается как ошибка",answerRevealed:"ОТВЕТ ПОКАЗАН"},
+    ja:{combinations:"組み合わせ",factorAny:"少なくとも一方が選択した数",factorBoth:"両方とも選択した数",
+      factorAnyHint:"もう一方は1〜10のどの数でも出題されます。",factorBothHint:"両方の数を選択した数から出題します。",
+      revealAnswer:"答えを表示（不正解として記録）",answerRevealed:"答えを表示しました"},
+    ko:{combinations:"조합",factorAny:"적어도 하나는 선택한 수",factorBoth:"둘 다 선택한 수",
+      factorAnyHint:"다른 수는 1부터 10까지 아무 수나 나올 수 있어요.",factorBothHint:"두 수 모두 선택한 수에서 나와요.",
+      revealAnswer:"정답 보기 (오답으로 기록)",answerRevealed:"정답을 표시했어요"},
+    zh:{combinations:"组合",factorAny:"至少一个数已选中",factorBoth:"两个数都已选中",
+      factorAnyHint:"另一个数可以是1到10中的任意数。",factorBothHint:"两个数都来自你所选的数字。",
+      revealAnswer:"显示答案（记为答错）",answerRevealed:"已显示答案"}
+  };
+  for (const [language,values] of Object.entries(PRACTICE_TEXT)) Object.assign(I18N[language],values);
   // The same pure rules can be tested in Node without changing the app source.
   if (typeof module!=="undefined" && module.exports) { module.exports={Training,SafeClock,createPairs,pairWeight,choosePair,normalizeConfig,DEFAULTS,LEVELS,I18N,LANGUAGE_NAMES,detectLanguage}; return; }
 
@@ -1160,6 +1206,8 @@
   function renderInput() {
     ui.answer.textContent=state.input || "?";
     const enabled=state.phase==="question" && !state.settingsOpen && !state.shareBusy;
+    ui.answer.disabled=!enabled || Boolean(state.input);
+    ui.answer.setAttribute("aria-label",t(enabled && !state.input ? "revealAnswer" : "yourAnswer"));
     for (const button of keyButtons) button.disabled=!enabled || ((button.dataset.key==="submit" || button.dataset.key==="backspace") && !state.input);
   }
   function renderPairProgress() {
@@ -1189,7 +1237,7 @@
       ui["feedback-title"].textContent=""; ui["feedback-detail"].textContent=t("inputHint");
     } else if (state.phase==="feedback" && state.lastResult) {
       const result=state.lastResult, q=training.current;
-      ui["feedback-title"].textContent=result.timeout ? "⏱ "+t("timeout") : result.correct ? "✓ "+t("correct") : "✕ "+t("wrong");
+      ui["feedback-title"].textContent=result.timeout ? "⏱ "+t("timeout") : result.revealed ? t("answerRevealed") : result.correct ? "✓ "+t("correct") : "✕ "+t("wrong");
       ui["feedback-detail"].textContent=result.timeout ? q.a+" × "+q.b+" = "+result.expected : !result.correct ? t("rightAnswer",{n:result.expected}) : result.newlyMastered ? "✓ "+t("pairMastered",{pair:q.a+" × "+q.b}) : t("pairStreak",{n:q.pair.streak,goal:training.config.goal});
     }
     ui.footnote.textContent=t("footer",{goal:training.config.goal});
@@ -1242,16 +1290,17 @@
       if (state.phase==="feedback" && !state.settingsOpen && !state.shareBusy && training.current && training.current.id===id) nextQuestion();
     });
   }
-  function finishAnswer(timeout,questionId) {
+  function finishAnswer(timeout,questionId,reveal=false) {
     if (state.phase!=="question" || state.settingsOpen || state.shareBusy || !training.current || training.current.id!==questionId) return;
     if (document.visibilityState==="hidden" || !root.isConnected) { pause("away"); return; }
     const limit=LEVELS[training.config.difficulty].ms;
     const elapsed=currentElapsed();
     const expired=Boolean(timeout || (limit && elapsed>=limit));
-    if (!expired && !state.input) return;
+    if (!expired && !reveal && !state.input) return;
     clock.cancel(); state.startedAt=null; state.elapsed=limit ? Math.min(elapsed,limit) : elapsed;
-    const result=training.score(questionId,state.input==="" ? null : Number(state.input),state.elapsed,expired);
+    const result=training.score(questionId,reveal || state.input==="" ? null : Number(state.input),state.elapsed,expired);
     if (!result) return;
+    if (reveal && !expired) { result.revealed=true; state.input=String(result.expected); }
     state.lastResult=result; state.phase="feedback";
     renderTimer(limit ? Math.max(0,limit-state.elapsed) : 0); render();
     startFeedback(result.correct ? (result.newlyMastered ? 1000 : 800) : 1050);
@@ -1300,6 +1349,9 @@
     else if (state.phase==="ready" && document.visibilityState!=="hidden") nextQuestion();
   });
   ui.pause.addEventListener("click",()=>pause("manual"));
+  ui.answer.addEventListener("click",()=>{
+    if (!state.input && training.current) finishAnswer(false,training.current.id,true);
+  });
   document.addEventListener("keydown",event=>{
     if (!root.isConnected || event.ctrlKey || event.metaKey || event.altKey || event.isComposing || event.repeat) return;
     if (event.key==="Escape") {
@@ -1321,6 +1373,8 @@
     for (const button of ui.tables.children) button.setAttribute("aria-pressed",String(selected.has(Number(button.dataset.table))));
     for (const button of ui.goals.children) button.setAttribute("aria-pressed",String(Number(button.dataset.goal)===training.config.goal));
     ui.difficulty.value=training.config.difficulty;
+    get("factor-mode").value=training.config.factorMode;
+    get("factor-hint").textContent=t(training.config.factorMode==="both" ? "factorBothHint" : "factorAnyHint");
     ui["selection-count"].textContent=t("pairsCount",{n:training.pairs.length});
     ui["table-error"].hidden=true;
   }
@@ -1360,6 +1414,7 @@
   ui["select-all"].addEventListener("click",()=>updateConfig({tables:[...DEFAULTS.tables]}));
   ui["select-hard"].addEventListener("click",()=>updateConfig({tables:[6,7,8,9]}));
   ui.difficulty.addEventListener("change",()=>updateConfig({difficulty:ui.difficulty.value}));
+  get("factor-mode").addEventListener("change",()=>updateConfig({factorMode:get("factor-mode").value}));
   ui["settings-toggle"].addEventListener("click",openSettings);
   ui["close-settings"].addEventListener("click",closeSettings);
   ui["back-settings"].addEventListener("click",closeSettings);
