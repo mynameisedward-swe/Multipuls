@@ -1,14 +1,14 @@
-/* Multipuls v3.1. Bump VERSION and script/style URL versions for every release. */
+/* Multipuls v3.2. Bump VERSION and script/style URL versions for every release. */
 "use strict";
-const VERSION = "v3.1";
+const VERSION = "v3.2";
 const BASE = self.registration.scope;
 const PREFIX = "multipuls:" + new URL(BASE).pathname + ":";
 const CACHE = PREFIX + VERSION;
 const ENTRY = new URL("./index.html", BASE).href;
 const ROOT = new URL("./", BASE).href;
 const ASSETS = [
-  "./index.html", "./styles.css?v=3.1", "./storage.js?v=3.1", "./app.js?v=3.1",
-  "./share.js?v=3.1", "./pwa.js?v=3.1", "./manifest.webmanifest?v=3.1",
+  "./index.html", "./styles.css?v=3.2", "./storage.js?v=3.2", "./app.js?v=3.2",
+  "./share.js?v=3.2", "./pwa.js?v=3.2", "./manifest.webmanifest?v=3.2",
   "./assets/header-x-192.png", "./icons/icon-180.png", "./icons/icon-192.png", "./icons/icon-512.png"
 ].map(path => new URL(path, BASE).href);
 const STATIC_PATHS = new Set(ASSETS.filter(url => url !== ENTRY).map(url => new URL(url).pathname));

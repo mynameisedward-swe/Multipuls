@@ -1,5 +1,5 @@
 {
-  "version": "v3.1",
+  "version": "v3.2",
   "method": "Deterministic Node VM tests with parsed markup, a minimal DOM double and stubbed device-sharing APIs. No browser execution or real messages sent.",
   "tests": [
     {
@@ -232,6 +232,26 @@
     },
     {
       "name": "V3.1 · Both new controls and feedback are translated in all 13 existing languages",
+      "status": "PASS"
+    },
+    {
+      "name": "V3.2 · Revealing shows the complete equation in the main display without changing scoring or feedback duration",
+      "status": "PASS"
+    },
+    {
+      "name": "V3.2 · Full equations show one-, two- and three-digit answers, including 10 × 10 = 100",
+      "status": "PASS"
+    },
+    {
+      "name": "V3.2 · Pause, Settings, leaving the app and reset remove the revealed result from the main display",
+      "status": "PASS"
+    },
+    {
+      "name": "V3.2 · Both numbers required is a named button switch that toggles the existing selection mode",
+      "status": "PASS"
+    },
+    {
+      "name": "V3.2 · A saved Both-selected choice from v3.1 restores as an enabled toggle with its progress intact",
       "status": "PASS"
     },
     {

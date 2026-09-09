@@ -1,0 +1,46 @@
+{
+  "version": "v3.2",
+  "method": "Static font-metric estimate for all 100 presentations, using DejaVu Sans Bold digits and regular symbols. Negative letter spacing is ignored conservatively. These are not browser measurements. Only revealed equations have different type sizing; their container keeps its previous height.",
+  "checks": [
+    {
+      "viewport_px": 320,
+      "font_px": 36,
+      "widest_equation": "10 \u00d7 10 = 100",
+      "estimated_width_px": 237.23,
+      "available_px": 264,
+      "result": "PASS"
+    },
+    {
+      "viewport_px": 360,
+      "font_px": 36,
+      "widest_equation": "10 \u00d7 10 = 100",
+      "estimated_width_px": 237.23,
+      "available_px": 304,
+      "result": "PASS"
+    },
+    {
+      "viewport_px": 371,
+      "font_px": 44,
+      "widest_equation": "10 \u00d7 10 = 100",
+      "estimated_width_px": 294.2,
+      "available_px": 295,
+      "result": "PASS"
+    },
+    {
+      "viewport_px": 390,
+      "font_px": 44,
+      "widest_equation": "10 \u00d7 10 = 100",
+      "estimated_width_px": 294.2,
+      "available_px": 314,
+      "result": "PASS"
+    },
+    {
+      "viewport_px": 476,
+      "font_px": 44,
+      "widest_equation": "10 \u00d7 10 = 100",
+      "estimated_width_px": 294.2,
+      "available_px": 400,
+      "result": "PASS"
+    }
+  ]
+}

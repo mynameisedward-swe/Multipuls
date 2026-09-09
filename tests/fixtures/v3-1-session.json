@@ -1,0 +1,130 @@
+{
+  "schema": 1,
+  "language": "sv",
+  "phase": "paused",
+  "training": {
+    "config": {
+      "tables": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "difficulty": "normal",
+      "goal": 3,
+      "factorMode": "both"
+    },
+    "sequence": 4,
+    "turn": 4,
+    "previousKey": "7:7",
+    "stats": {
+      "questions": 3,
+      "correct": 2,
+      "wrong": 1,
+      "streak": 0,
+      "best": 2,
+      "responseTimes": [
+        1000,
+        1250,
+        1500
+      ]
+    },
+    "history": [
+      {
+        "key": "6:6",
+        "correct": 0,
+        "wrong": 0,
+        "streak": 0,
+        "responseTimes": [],
+        "lastSeenTurn": 0,
+        "lastWrongTurn": null
+      },
+      {
+        "key": "6:7",
+        "correct": 0,
+        "wrong": 0,
+        "streak": 0,
+        "responseTimes": [],
+        "lastSeenTurn": 0,
+        "lastWrongTurn": null
+      },
+      {
+        "key": "6:8",
+        "correct": 0,
+        "wrong": 0,
+        "streak": 0,
+        "responseTimes": [],
+        "lastSeenTurn": 0,
+        "lastWrongTurn": null
+      },
+      {
+        "key": "6:9",
+        "correct": 1,
+        "wrong": 1,
+        "streak": 0,
+        "responseTimes": [
+          1000,
+          1500
+        ],
+        "lastSeenTurn": 3,
+        "lastWrongTurn": 3
+      },
+      {
+        "key": "7:7",
+        "correct": 1,
+        "wrong": 0,
+        "streak": 1,
+        "responseTimes": [
+          1250
+        ],
+        "lastSeenTurn": 4,
+        "lastWrongTurn": null
+      },
+      {
+        "key": "7:8",
+        "correct": 0,
+        "wrong": 0,
+        "streak": 0,
+        "responseTimes": [],
+        "lastSeenTurn": 0,
+        "lastWrongTurn": null
+      },
+      {
+        "key": "7:9",
+        "correct": 0,
+        "wrong": 0,
+        "streak": 0,
+        "responseTimes": [],
+        "lastSeenTurn": 0,
+        "lastWrongTurn": null
+      },
+      {
+        "key": "8:8",
+        "correct": 0,
+        "wrong": 0,
+        "streak": 0,
+        "responseTimes": [],
+        "lastSeenTurn": 0,
+        "lastWrongTurn": null
+      },
+      {
+        "key": "8:9",
+        "correct": 0,
+        "wrong": 0,
+        "streak": 0,
+        "responseTimes": [],
+        "lastSeenTurn": 0,
+        "lastWrongTurn": null
+      },
+      {
+        "key": "9:9",
+        "correct": 0,
+        "wrong": 0,
+        "streak": 0,
+        "responseTimes": [],
+        "lastSeenTurn": 0,
+        "lastWrongTurn": null
+      }
+    ]
+  }
+}

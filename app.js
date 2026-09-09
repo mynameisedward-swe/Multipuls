@@ -1084,43 +1084,43 @@
     I18N[language].storageUnavailable=values[0];I18N[language].storageInvalid=values[1];
   }
   const PRACTICE_TEXT={
-    en:{combinations:"Combinations",factorAny:"At least one selected",factorBoth:"Both selected",
+    en:{combinations:"Combinations",factorAny:"At least one selected",factorBoth:"Both selected",bothRequired:"Both numbers required",
       factorAnyHint:"The other number can be any number from 1 to 10.",factorBothHint:"Both numbers come from your selection.",
       revealAnswer:"Show the answer; count as missed",answerRevealed:"ANSWER SHOWN"},
-    sv:{combinations:"Kombinationer",factorAny:"Minst ett valt tal",factorBoth:"Båda talen valda",
+    sv:{combinations:"Kombinationer",factorAny:"Minst ett valt tal",factorBoth:"Båda talen valda",bothRequired:"Båda talen krävs",
       factorAnyHint:"Det andra talet kan vara vilket som helst från 1 till 10.",factorBothHint:"Båda talen tas från ditt urval.",
       revealAnswer:"Visa svaret; räknas som fel",answerRevealed:"SVARET VISAT"},
-    es:{combinations:"Combinaciones",factorAny:"Al menos uno elegido",factorBoth:"Los dos elegidos",
+    es:{combinations:"Combinaciones",factorAny:"Al menos uno elegido",factorBoth:"Los dos elegidos",bothRequired:"Se requieren ambos números",
       factorAnyHint:"El otro número puede ser cualquiera del 1 al 10.",factorBothHint:"Los dos números deben estar seleccionados.",
       revealAnswer:"Mostrar la respuesta; cuenta como error",answerRevealed:"RESPUESTA MOSTRADA"},
-    de:{combinations:"Kombinationen",factorAny:"Mindestens eine ausgewählt",factorBoth:"Beide ausgewählt",
+    de:{combinations:"Kombinationen",factorAny:"Mindestens eine ausgewählt",factorBoth:"Beide ausgewählt",bothRequired:"Beide Zahlen erforderlich",
       factorAnyHint:"Die andere Zahl kann eine beliebige Zahl von 1 bis 10 sein.",factorBothHint:"Beide Zahlen stammen aus deiner Auswahl.",
       revealAnswer:"Antwort anzeigen; zählt als Fehler",answerRevealed:"ANTWORT ANGEZEIGT"},
-    fr:{combinations:"Combinaisons",factorAny:"Au moins un choisi",factorBoth:"Les deux choisis",
+    fr:{combinations:"Combinaisons",factorAny:"Au moins un choisi",factorBoth:"Les deux choisis",bothRequired:"Les deux nombres requis",
       factorAnyHint:"L’autre nombre peut être n’importe lequel de 1 à 10.",factorBothHint:"Les deux nombres font partie de ta sélection.",
       revealAnswer:"Afficher la réponse ; compte comme une erreur",answerRevealed:"RÉPONSE AFFICHÉE"},
-    it:{combinations:"Combinazioni",factorAny:"Almeno uno selezionato",factorBoth:"Entrambi selezionati",
+    it:{combinations:"Combinazioni",factorAny:"Almeno uno selezionato",factorBoth:"Entrambi selezionati",bothRequired:"Entrambi i numeri richiesti",
       factorAnyHint:"L’altro numero può essere qualsiasi numero da 1 a 10.",factorBothHint:"Entrambi i numeri fanno parte della tua selezione.",
       revealAnswer:"Mostra la risposta; conta come errore",answerRevealed:"RISPOSTA MOSTRATA"},
-    pt:{combinations:"Combinações",factorAny:"Pelo menos um escolhido",factorBoth:"Ambos escolhidos",
+    pt:{combinations:"Combinações",factorAny:"Pelo menos um escolhido",factorBoth:"Ambos escolhidos",bothRequired:"Ambos os números obrigatórios",
       factorAnyHint:"O outro número pode ser qualquer um de 1 a 10.",factorBothHint:"Os dois números vêm da sua seleção.",
       revealAnswer:"Mostrar a resposta; conta como erro",answerRevealed:"RESPOSTA MOSTRADA"},
-    nl:{combinations:"Combinaties",factorAny:"Minstens één gekozen",factorBoth:"Beide gekozen",
+    nl:{combinations:"Combinaties",factorAny:"Minstens één gekozen",factorBoth:"Beide gekozen",bothRequired:"Beide getallen vereist",
       factorAnyHint:"Het andere getal kan elk getal van 1 tot en met 10 zijn.",factorBothHint:"Beide getallen komen uit je selectie.",
       revealAnswer:"Toon het antwoord; telt als fout",answerRevealed:"ANTWOORD GETOOND"},
-    pl:{combinations:"Kombinacje",factorAny:"Co najmniej jedna wybrana",factorBoth:"Obie wybrane",
+    pl:{combinations:"Kombinacje",factorAny:"Co najmniej jedna wybrana",factorBoth:"Obie wybrane",bothRequired:"Wymagane obie liczby",
       factorAnyHint:"Druga liczba może być dowolną liczbą od 1 do 10.",factorBothHint:"Obie liczby pochodzą z twojego wyboru.",
       revealAnswer:"Pokaż odpowiedź; liczy się jako błąd",answerRevealed:"ODPOWIEDŹ POKAZANA"},
-    ru:{combinations:"Комбинации",factorAny:"Хотя бы одно выбрано",factorBoth:"Оба выбраны",
+    ru:{combinations:"Комбинации",factorAny:"Хотя бы одно выбрано",factorBoth:"Оба выбраны",bothRequired:"Оба числа обязательны",
       factorAnyHint:"Второе число может быть любым от 1 до 10.",factorBothHint:"Оба числа входят в ваш выбор.",
       revealAnswer:"Показать ответ; засчитывается как ошибка",answerRevealed:"ОТВЕТ ПОКАЗАН"},
-    ja:{combinations:"組み合わせ",factorAny:"少なくとも一方が選択した数",factorBoth:"両方とも選択した数",
+    ja:{combinations:"組み合わせ",factorAny:"少なくとも一方が選択した数",factorBoth:"両方とも選択した数",bothRequired:"両方とも選択した数にする",
       factorAnyHint:"もう一方は1〜10のどの数でも出題されます。",factorBothHint:"両方の数を選択した数から出題します。",
       revealAnswer:"答えを表示（不正解として記録）",answerRevealed:"答えを表示しました"},
-    ko:{combinations:"조합",factorAny:"적어도 하나는 선택한 수",factorBoth:"둘 다 선택한 수",
+    ko:{combinations:"조합",factorAny:"적어도 하나는 선택한 수",factorBoth:"둘 다 선택한 수",bothRequired:"두 수 모두 선택한 수로",
       factorAnyHint:"다른 수는 1부터 10까지 아무 수나 나올 수 있어요.",factorBothHint:"두 수 모두 선택한 수에서 나와요.",
       revealAnswer:"정답 보기 (오답으로 기록)",answerRevealed:"정답을 표시했어요"},
-    zh:{combinations:"组合",factorAny:"至少一个数已选中",factorBoth:"两个数都已选中",
+    zh:{combinations:"组合",factorAny:"至少一个数已选中",factorBoth:"两个数都已选中",bothRequired:"两个数都必须选中",
       factorAnyHint:"另一个数可以是1到10中的任意数。",factorBothHint:"两个数都来自你所选的数字。",
       revealAnswer:"显示答案（记为答错）",answerRevealed:"已显示答案"}
   };
@@ -1246,10 +1246,16 @@
     renderShareNotice();
     saveSession();
   }
-  function renderEquation(q) {
+  function renderEquation(q,answer=null) {
     const left=document.createElement("span"), times=document.createElement("span"), right=document.createElement("span");
     left.textContent=q.a; times.textContent="×"; times.className="mp-times"; right.textContent=q.b;
     ui.equation.replaceChildren(left,times,right); ui.equation.setAttribute("aria-label",q.a+" × "+q.b);
+    ui.equation.dataset.revealed=String(answer!==null);
+    if (answer!==null) {
+      const equals=document.createElement("span"), result=document.createElement("span");
+      equals.textContent="="; equals.className="mp-times"; result.textContent=answer;
+      ui.equation.append(equals,result); ui.equation.setAttribute("aria-label",q.a+" × "+q.b+" = "+answer);
+    }
   }
   function renderResults() {
     const stats=training.stats;
@@ -1300,7 +1306,7 @@
     clock.cancel(); state.startedAt=null; state.elapsed=limit ? Math.min(elapsed,limit) : elapsed;
     const result=training.score(questionId,reveal || state.input==="" ? null : Number(state.input),state.elapsed,expired);
     if (!result) return;
-    if (reveal && !expired) { result.revealed=true; state.input=String(result.expected); }
+    if (reveal && !expired) { result.revealed=true; state.input=String(result.expected); renderEquation(training.current,result.expected); }
     state.lastResult=result; state.phase="feedback";
     renderTimer(limit ? Math.max(0,limit-state.elapsed) : 0); render();
     startFeedback(result.correct ? (result.newlyMastered ? 1000 : 800) : 1050);
@@ -1309,6 +1315,7 @@
     // End all active timers first. Never score a partially answered question.
     clock.cancel();
     if (state.phase==="question" || state.phase==="feedback") {
+      if (state.lastResult && state.lastResult.revealed) renderEquation(training.current);
       training.discardCurrent();
       state.phase="paused"; state.input=""; state.elapsed=0; state.startedAt=null; state.lastResult=null;
       state.pauseReason=reason;
@@ -1373,7 +1380,7 @@
     for (const button of ui.tables.children) button.setAttribute("aria-pressed",String(selected.has(Number(button.dataset.table))));
     for (const button of ui.goals.children) button.setAttribute("aria-pressed",String(Number(button.dataset.goal)===training.config.goal));
     ui.difficulty.value=training.config.difficulty;
-    get("factor-mode").value=training.config.factorMode;
+    get("factor-mode").setAttribute("aria-checked",String(training.config.factorMode==="both"));
     get("factor-hint").textContent=t(training.config.factorMode==="both" ? "factorBothHint" : "factorAnyHint");
     ui["selection-count"].textContent=t("pairsCount",{n:training.pairs.length});
     ui["table-error"].hidden=true;
@@ -1414,7 +1421,7 @@
   ui["select-all"].addEventListener("click",()=>updateConfig({tables:[...DEFAULTS.tables]}));
   ui["select-hard"].addEventListener("click",()=>updateConfig({tables:[6,7,8,9]}));
   ui.difficulty.addEventListener("change",()=>updateConfig({difficulty:ui.difficulty.value}));
-  get("factor-mode").addEventListener("change",()=>updateConfig({factorMode:get("factor-mode").value}));
+  get("factor-mode").addEventListener("click",()=>updateConfig({factorMode:training.config.factorMode==="both" ? "any" : "both"}));
   ui["settings-toggle"].addEventListener("click",openSettings);
   ui["close-settings"].addEventListener("click",closeSettings);
   ui["back-settings"].addEventListener("click",closeSettings);
