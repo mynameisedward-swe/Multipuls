@@ -1,10 +1,15 @@
-# Multipuls v3.2
+# Multipuls v3.3
 
 A complete static multiplication trainer, prepared for GitHub Pages and installation on a phone. No build step, backend, account system, API keys or package installation is needed to publish it.
 
-This release starts from the complete v3.1 package and changes only the two requested interface details, plus release versions, tests and documentation. The existing design, icons, keypad, adaptive weighting, scoring, sharing and storage remain in place.
+This release starts from the complete v3.2 package and changes only revealed-equation sizing and the answer-field behavior, plus release versions, tests and documentation. The existing design, icons, keypad, adaptive weighting, scoring, sharing, combination toggle and storage remain in place.
 
-## Changes in v3.2
+## Changes in v3.3
+
+1. A revealed equation starts at the original question font size. If it does not fit, the app measures its rendered width and chooses the largest fitting size, to a tenth of a pixel, with a small margin for rounding. This also handles **10 × 10 = 100**. It refits on window resize and restores the original question typography on the next question or pause. The question area's height is unchanged.
+2. The answer field stays at **?** during a reveal instead of duplicating the correct answer there. It is disabled during feedback as before. The full equation and feedback still show the correct answer, and revealing still records one miss without correct-answer or mastery credit.
+
+## Behavior retained from v3.2
 
 1. Tapping **?** also shows the full equation in the main display, for example **3 × 4 = 12**. The equation fits into the existing question area during the same feedback interval. It returns to the normal question display when the next question starts or the session pauses. Revealing still records one miss and gives no correct-answer or mastery credit.
 2. The combination dropdown is now a **Both numbers required** switch, translated into all 13 existing languages. **Off** keeps the original behavior: at least one factor is selected and the other can be any number from 1–10. **On** requires both factors to come from the selected numbers. Off remains the default. Existing saved choices, including Both selected from v3.1, carry over automatically.
@@ -15,7 +20,7 @@ This release starts from the complete v3.1 package and changes only the two requ
 2. Selecting 6, 7, 8 and 9 gives 34 unique pairs with **Both numbers required** off or 10 unique pairs with it on. Switching modes preserves history, scores and settings. Existing v3 sessions restore in the original mode.
 3. The page now declares its dark color scheme before loading CSS and gives the body an explicit `#111c1e` background, matching the existing page/manifest theme colors. Existing safe-area padding and edge-to-edge viewport support are retained. This gives Android the applicable web color hints; an exact match for the system navigation bar, especially in three-button mode, cannot be guaranteed or verified here. The browser and operating system control system surfaces. [Color-scheme guidance](https://web.dev/articles/color-scheme), [Chrome's Android edge-to-edge behavior](https://developer.chrome.com/docs/css-ui/edge-to-edge), [Manifest theme-color behavior](https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps/Manifest/Reference/theme_color).
 
-To update an existing GitHub Pages deployment, upload the extracted contents into the same repository root, replacing the previous release files, and commit. Open the app online and reload to check the **v3.2** label. The service-worker cache and asset URLs are versioned for this update; the installed app identity and saved-session key are unchanged. Do not clear site data to update, because it contains your saved round.
+To update an existing GitHub Pages deployment, upload the extracted contents into the same repository root, replacing the previous release files, and commit. Open the app online and reload to check the **v3.3** label. The service-worker cache and asset URLs are versioned for this update; the installed app identity and saved-session key are unchanged. Do not clear site data to update, because it contains your saved round.
 
 ## Deploy on GitHub Pages
 
@@ -31,7 +36,7 @@ The ZIP contents match the repository structure directly; there is no extra encl
 
 ## First published check
 
-Confirm that **v3.2** appears beside the app name. Play a few questions, change a setting, pause, and reload: the saved round should offer **Continue playing / Fortsätt spela** with your scores and choices intact. Tap **?** on a fresh question and check that the main display shows the full equation without adding a correct answer. Check that **10 × 10 = 100** fits your phone's screen. Try **Both numbers required** on and off with a small table selection. Share should open the device's sharing sheet with the app link, or copy just the link if native sharing is unavailable. On Android, check the bottom system bar in both the browser and installed app.
+Confirm that **v3.3** appears beside the app name. Play a few questions, change a setting, pause, and reload: the saved round should offer **Continue playing / Fortsätt spela** with your scores and choices intact. Tap **?** on a fresh question and check that the main display shows the full equation while the answer field stays at **?**, without adding a correct answer. Check that **10 × 10 = 100** fits your phone's screen and that short equations retain the original size when they fit. Try **Both numbers required** on and off with a small table selection. Share should open the device's sharing sheet with the app link, or copy just the link if native sharing is unavailable. On Android, check the bottom system bar in both the browser and installed app.
 
 Open the site online once and allow its initial loading to finish. Reload it once while online, then try it in airplane mode: the app should load and let you play offline. Sharing a link to another person naturally still needs whatever connection the selected messaging app uses.
 
@@ -84,11 +89,11 @@ node tests/verify-app.cjs
 node tests/verify-pwa.cjs
 ```
 
-**83/83 automated checks passed:** 70 training, storage and integration checks plus 13 release/service-worker checks. The v3.1 checks remain, with the dropdown interactions changed to switch clicks and release-version assertions updated. Five added checks cover the full equation and unchanged scoring/feedback duration, one- through three-digit answers, cleanup on pause/Settings/reset/leaving the app, accessible switch behavior, and an actual saved v3.1 Both-selected session. Existing checks cover the complete standard round, timers, pause/reset, mastery, combination pools, translations, sharing, storage, offline behavior and safe cache cleanup.
+**86/86 automated checks passed:** 73 training, storage and integration checks plus 13 release/service-worker checks. The v3.2 checks remain, with the reveal answer-field expectations and release-version assertions updated. Three added checks cover keeping the original size when an equation fits, the maximum fitting size for **10 × 10 = 100** at representative viewport widths, and refitting on resize without changing timers or saved data. Existing checks cover the complete standard round, full equations, timers, pause/reset, mastery, combination modes, translations, sharing, saved-session compatibility, offline behavior and safe cache cleanup.
 
-`tests/equation-layout-review.json` records a static font-metric estimate for every factor pair at mobile widths from 320 pixels. This is separate from the 83 interaction/release checks and is not a browser rendering test. The full-equation font size applies only during reveal; its container retains the previous height.
+`tests/equation-layout-review.json` records results from the fitting tests using a deterministic DOM geometry double at widths from 320 pixels. These are simulated widths, not actual browser or device font measurements. The published app measures its actual rendered text. The fitted size applies only during reveal; its container retains the previous height.
 
-The tests execute the shipped JavaScript with a deterministic clock, a minimal DOM double, simulated storage/sharing, and an in-memory service-worker environment. They do not send messages or make network requests. Browser testing could not be run in this environment because the browser's URL policy blocked the preview route; that restriction was not bypassed. Actual Chromium/Safari rendering, native sharing and iPhone installation remain the short post-deployment checks above.
+The tests execute the shipped JavaScript with a deterministic clock, DOM/text-geometry doubles, simulated storage/sharing, and an in-memory service-worker environment. They do not send messages or make network requests. Browser testing could not be run in this environment because the browser's URL policy blocked the preview route; that restriction was not bypassed. Actual Chromium/Safari rendering, native sharing and iPhone installation remain the short post-deployment checks above.
 
 ## If deployment does not show the app
 

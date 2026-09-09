@@ -1,6 +1,6 @@
 {
-  "version": "v3.2",
-  "method": "Deterministic Node VM tests with parsed markup, a minimal DOM double and stubbed device-sharing APIs. No browser execution or real messages sent.",
+  "version": "v3.3",
+  "method": "Deterministic Node VM tests with parsed markup, DOM and text-geometry doubles, and stubbed device-sharing APIs. No browser execution or real messages sent.",
   "tests": [
     {
       "name": "V2.1 · Pause reuses the starting screen and button; only the action label changes",
@@ -252,6 +252,18 @@
     },
     {
       "name": "V3.2 · A saved Both-selected choice from v3.1 restores as an enabled toggle with its progress intact",
+      "status": "PASS"
+    },
+    {
+      "name": "V3.3 · Short revealed equations keep the original question size and the answer field stays at ?",
+      "status": "PASS"
+    },
+    {
+      "name": "V3.3 · 10 × 10 = 100 uses the largest fitting font at every supported viewport, capped at the original size",
+      "status": "PASS"
+    },
+    {
+      "name": "V3.3 · Resizing a revealed equation refits it without changing feedback timers, scores or saved data",
       "status": "PASS"
     },
     {

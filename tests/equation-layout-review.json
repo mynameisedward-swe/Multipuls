@@ -1,46 +1,87 @@
 {
-  "version": "v3.2",
-  "method": "Static font-metric estimate for all 100 presentations, using DejaVu Sans Bold digits and regular symbols. Negative letter spacing is ignored conservatively. These are not browser measurements. Only revealed equations have different type sizing; their container keeps its previous height.",
+  "version": "v3.3",
+  "method": "The shipped fitting function executes against a deterministic DOM geometry double. These are simulated widths, not browser or device font measurements. The published app measures its actual rendered spans using getBoundingClientRect and computed styles.",
   "checks": [
     {
       "viewport_px": 320,
-      "font_px": 36,
-      "widest_equation": "10 \u00d7 10 = 100",
-      "estimated_width_px": 237.23,
-      "available_px": 264,
-      "result": "PASS"
-    },
-    {
-      "viewport_px": 360,
-      "font_px": 36,
-      "widest_equation": "10 \u00d7 10 = 100",
-      "estimated_width_px": 237.23,
-      "available_px": 304,
-      "result": "PASS"
-    },
-    {
-      "viewport_px": 371,
-      "font_px": 44,
-      "widest_equation": "10 \u00d7 10 = 100",
-      "estimated_width_px": 294.2,
-      "available_px": 295,
-      "result": "PASS"
+      "equation": "1 × 1 = 1",
+      "font_px": 66,
+      "original_font_px": 66,
+      "rendered_width_in_double": 231.71599999999998,
+      "available_px": 263,
+      "original_size_retained": true
     },
     {
       "viewport_px": 390,
-      "font_px": 44,
-      "widest_equation": "10 \u00d7 10 = 100",
-      "estimated_width_px": 294.2,
-      "available_px": 314,
-      "result": "PASS"
+      "equation": "1 × 1 = 1",
+      "font_px": 79,
+      "original_font_px": 79,
+      "rendered_width_in_double": 282.304,
+      "available_px": 313,
+      "original_size_retained": true
     },
     {
       "viewport_px": 476,
-      "font_px": 44,
-      "widest_equation": "10 \u00d7 10 = 100",
-      "estimated_width_px": 294.2,
-      "available_px": 400,
-      "result": "PASS"
+      "equation": "1 × 1 = 1",
+      "font_px": 79,
+      "original_font_px": 79,
+      "rendered_width_in_double": 282.304,
+      "available_px": 399,
+      "original_size_retained": true
+    },
+    {
+      "viewport_px": 320,
+      "equation": "10 × 10 = 100",
+      "font_px": 41.7,
+      "original_font_px": 66,
+      "rendered_width_in_double": 262.86920000000003,
+      "available_px": 263,
+      "larger_size_does_not_fit": true
+    },
+    {
+      "viewport_px": 360,
+      "equation": "10 × 10 = 100",
+      "font_px": 48.3,
+      "original_font_px": 66,
+      "rendered_width_in_double": 302.97079999999994,
+      "available_px": 303,
+      "larger_size_does_not_fit": true
+    },
+    {
+      "viewport_px": 371,
+      "equation": "10 × 10 = 100",
+      "font_px": 45.5,
+      "original_font_px": 79,
+      "rendered_width_in_double": 293.95799999999997,
+      "available_px": 294,
+      "larger_size_does_not_fit": true
+    },
+    {
+      "viewport_px": 390,
+      "equation": "10 × 10 = 100",
+      "font_px": 48.6,
+      "original_font_px": 79,
+      "rendered_width_in_double": 312.79359999999997,
+      "available_px": 313,
+      "larger_size_does_not_fit": true
+    },
+    {
+      "viewport_px": 476,
+      "equation": "10 × 10 = 100",
+      "font_px": 62.7,
+      "original_font_px": 79,
+      "rendered_width_in_double": 398.46520000000004,
+      "available_px": 399,
+      "larger_size_does_not_fit": true
+    },
+    {
+      "viewport_px": 736,
+      "equation": "10 × 10 = 100",
+      "font_px": 62.7,
+      "original_font_px": 79,
+      "rendered_width_in_double": 398.46520000000004,
+      "available_px": 399,
+      "larger_size_does_not_fit": true
     }
   ]
 }

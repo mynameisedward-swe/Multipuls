@@ -1246,7 +1246,29 @@
     renderShareNotice();
     saveSession();
   }
+  function fitRevealedEquation() {
+    const equation=ui.equation;
+    if (equation.dataset.revealed!=="true" || !equation.isConnected) return;
+    // Measure the current device font at the original question size first.
+    equation.style.fontSize="";
+    const style=window.getComputedStyle(equation);
+    const maximum=parseFloat(style.fontSize);
+    const available=equation.getBoundingClientRect().width-(parseFloat(style.paddingLeft)||0)-(parseFloat(style.paddingRight)||0)-1;
+    if (!(available>0) || !(maximum>0)) return;
+    const gap=parseFloat(style.columnGap)||0;
+    const fits=()=>[...equation.children].reduce((width,part)=>width+part.getBoundingClientRect().width,0)+gap*(equation.children.length-1)<=available;
+    if (fits()) return;
+    // Find the largest fitting size to within 0.1 px, without changing height.
+    let low=0,high=Math.floor(maximum*10);
+    while (low<high) {
+      const size=Math.ceil((low+high)/2);
+      equation.style.fontSize=(size/10)+"px";
+      if (fits()) low=size; else high=size-1;
+    }
+    equation.style.fontSize=(low/10)+"px";
+  }
   function renderEquation(q,answer=null) {
+    ui.equation.style.fontSize="";
     const left=document.createElement("span"), times=document.createElement("span"), right=document.createElement("span");
     left.textContent=q.a; times.textContent="×"; times.className="mp-times"; right.textContent=q.b;
     ui.equation.replaceChildren(left,times,right); ui.equation.setAttribute("aria-label",q.a+" × "+q.b);
@@ -1255,6 +1277,7 @@
       const equals=document.createElement("span"), result=document.createElement("span");
       equals.textContent="="; equals.className="mp-times"; result.textContent=answer;
       ui.equation.append(equals,result); ui.equation.setAttribute("aria-label",q.a+" × "+q.b+" = "+answer);
+      fitRevealedEquation();
     }
   }
   function renderResults() {
@@ -1306,7 +1329,7 @@
     clock.cancel(); state.startedAt=null; state.elapsed=limit ? Math.min(elapsed,limit) : elapsed;
     const result=training.score(questionId,reveal || state.input==="" ? null : Number(state.input),state.elapsed,expired);
     if (!result) return;
-    if (reveal && !expired) { result.revealed=true; state.input=String(result.expected); renderEquation(training.current,result.expected); }
+    if (reveal && !expired) { result.revealed=true; renderEquation(training.current,result.expected); }
     state.lastResult=result; state.phase="feedback";
     renderTimer(limit ? Math.max(0,limit-state.elapsed) : 0); render();
     startFeedback(result.correct ? (result.newlyMastered ? 1000 : 800) : 1050);
@@ -1464,6 +1487,7 @@
   window.addEventListener("blur",()=>pause("away"));
   window.addEventListener("pagehide",()=>pause("away"));
   window.addEventListener("pageshow",event=>{ if (event.persisted) pause("away"); });
+  window.addEventListener("resize",fitRevealedEquation);
   restoreSession();
   applyLanguage();
 })();
