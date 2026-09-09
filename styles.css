@@ -1,0 +1,145 @@
+html { background: #111c1e; color-scheme: dark; }
+body { margin: 0; padding: max(12px, env(safe-area-inset-top)) env(safe-area-inset-right) max(12px, env(safe-area-inset-bottom)) env(safe-area-inset-left); }
+.mp-noscript { padding: 20px; color: #f6f8ee; font-family: sans-serif; }
+#multipuls-v3 .mp-save-notice { margin: 0 0 16px; color: var(--mp-red); font-size: 12px; }
+#multipuls-v3 {
+    --mp-bg: #111c1e; --mp-panel: #1b292c; --mp-key: #243538; --mp-key-hover: #30464a;
+    --mp-text: #f6f8ee; --mp-muted: #adbebc; --mp-line: #35474a; --mp-lime: #d0f88b;
+    --mp-green: #aff3bd; --mp-red: #ffb0b6;
+    color-scheme: dark; width: 100%; max-width: 476px; box-sizing: border-box; margin: 0 auto;
+    padding: 20px; border-radius: 28px; background: radial-gradient(ellipse at 5% 0%, #243b33 0%, transparent 46%), var(--mp-bg);
+    color: var(--mp-text); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-size: 14px; line-height: 1.4; text-align: left; isolation: isolate;
+  }
+  #multipuls-v3 *, #multipuls-v3 *::before, #multipuls-v3 *::after { box-sizing: border-box; }
+  #multipuls-v3 [hidden] { display: none !important; }
+  #multipuls-v3 button, #multipuls-v3 select { font: inherit; color: inherit; cursor: pointer; touch-action: manipulation; }
+  #multipuls-v3 button { border: 0; -webkit-tap-highlight-color: transparent; }
+  #multipuls-v3 button:disabled { cursor: default; }
+  #multipuls-v3 button:active:not(:disabled) { transform: translateY(1px); }
+  #multipuls-v3 p, #multipuls-v3 h1, #multipuls-v3 h2, #multipuls-v3 dl { margin: 0; }
+  #multipuls-v3 .mp-header { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 22px; }
+  #multipuls-v3 .mp-brand { display: flex; flex: 1; min-width: 0; align-items: center; gap: 10px; }
+  #multipuls-v3 .mp-brand > div { min-width: 0; }
+  #multipuls-v3 .mp-brand strong { display: block; color: #bff4df; font-size: 18px; font-weight: 750; letter-spacing: -.5px; }
+  #multipuls-v3 .mp-logo { display: block; flex-shrink: 0; width: 42px; height: 42px; object-fit: contain; }
+  #multipuls-v3 .mp-brand-sub { margin-top: 2px; color: var(--mp-muted); font-size: 11px; }
+  #multipuls-v3 .mp-brand small { margin-left: 3px; font-size: 11px; color: #92a5a2; }
+  #multipuls-v3 .mp-top-actions { display: flex; flex-shrink: 0; gap: 7px; align-items: center; }
+  #multipuls-v3 .mp-icon-button { display: grid; place-items: center; flex-shrink: 0; width: 44px; height: 44px; border: 1px solid var(--mp-line); border-radius: 13px; background: #17282a; font-size: 20px; }
+  #multipuls-v3 .mp-icon-button svg { width: 21px; height: 21px; display: block; }
+  #multipuls-v3 .mp-icon-button[aria-expanded="true"] { border-color: var(--mp-lime); color: var(--mp-lime); }
+  #multipuls-v3 .mp-overview { margin-bottom: 17px; }
+  #multipuls-v3 .mp-metrics { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 7px; }
+  #multipuls-v3 .mp-metrics > div:nth-child(2) { text-align: center; }
+  #multipuls-v3 .mp-metrics > div:last-child { text-align: right; }
+  #multipuls-v3 .mp-label { display: block; color: var(--mp-muted); font-size: 11px; margin-bottom: 2px; }
+  #multipuls-v3 .mp-metrics strong { display: block; font-size: 20px; font-weight: 600; font-variant-numeric: tabular-nums; }
+  #multipuls-v3 .mp-muted { color: var(--mp-muted); font-size: 14px; font-weight: 400; }
+  #multipuls-v3 .mp-flame { font-size: 16px; }
+  #multipuls-v3 .mp-mastery-track { height: 5px; margin-top: 12px; background: #2b3d3a; border-radius: 5px; overflow: hidden; }
+  #multipuls-v3 .mp-mastery-track > div { height: 100%; width: 0; border-radius: inherit; background: var(--mp-lime); transition: width .3s ease; }
+  #multipuls-v3 .mp-question-card { background: linear-gradient(145deg, #20312f, var(--mp-panel)); border-radius: 22px; padding: 16px 18px 0; transition: background .15s ease; }
+  #multipuls-v3 .mp-timer-heading { display: flex; align-items: center; justify-content: space-between; gap: 8px; color: var(--mp-muted); font-size: 12px; }
+  #multipuls-v3 .mp-time { color: var(--mp-lime); font-variant-numeric: tabular-nums; min-width: 44px; text-align: right; }
+  #multipuls-v3 .mp-time-actions { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+  #multipuls-v3 .mp-pause-button { display: flex; align-items: center; gap: 5px; min-height: 44px; padding: 0 9px; background: #17282a; border: 1px solid var(--mp-line); border-radius: 11px; color: var(--mp-text); font-size: 12px; }
+  #multipuls-v3 .mp-timer-track { height: 3px; border-radius: 4px; margin-top: 8px; background: #385048; overflow: hidden; }
+  #multipuls-v3 .mp-timer-track > div { width: 100%; height: 100%; background: var(--mp-lime); transform-origin: left; }
+  #multipuls-v3 .mp-question-top { display: flex; align-items: center; justify-content: space-between; gap: 6px; margin-top: 20px; color: var(--mp-muted); font-size: 11px; letter-spacing: 1.3px; }
+  #multipuls-v3 .mp-dots { display: flex; gap: 5px; }
+  #multipuls-v3 .mp-dot { width: 6px; height: 6px; border-radius: 50%; background: #547063; }
+  #multipuls-v3 .mp-dot.is-filled { background: var(--mp-lime); }
+  #multipuls-v3 .mp-equation { display: flex; justify-content: center; align-items: center; gap: 15px; padding: 9px 0 13px; font-size: 79px; font-weight: 700; line-height: 1.2; letter-spacing: -4px; font-variant-numeric: tabular-nums; }
+  #multipuls-v3 .mp-times { color: var(--mp-lime); font-size: .7em; font-weight: 400; letter-spacing: 0; }
+  #multipuls-v3 .mp-answer-box { display: flex; align-items: center; justify-content: space-between; min-height: 58px; gap: 12px; padding: 5px 18px; background: #111e21; border-radius: 13px; color: var(--mp-muted); font-size: 12px; }
+  #multipuls-v3 .mp-answer-box output { display: block; color: var(--mp-text); min-width: 64px; text-align: right; font-size: 34px; line-height: 1.3; font-weight: 600; font-variant-numeric: tabular-nums; }
+  #multipuls-v3 .mp-status { display: grid; place-items: center; min-height: 69px; text-align: center; padding: 8px 0; }
+  #multipuls-v3 .mp-status strong { display: block; font-size: 14px; font-weight: 700; letter-spacing: .4px; }
+  #multipuls-v3 .mp-status [data-ui="feedback-detail"] { display: block; font-size: 12px; color: var(--mp-muted); margin-top: 2px; }
+  #multipuls-v3 .mp-primary { display: flex; align-items: center; justify-content: center; gap: 18px; min-height: 46px; padding: 12px 18px; color: #17211a; background: var(--mp-lime); border-radius: 13px; font-weight: 650; }
+  #multipuls-v3 .mp-start { min-height: 42px; padding: 9px 22px; font-size: 14px; }
+  #multipuls-v3 .mp-keypad { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin-top: 12px; }
+  #multipuls-v3 .mp-key { min-height: 57px; border-radius: 14px; background: var(--mp-key); color: var(--mp-text); font-size: 27px; font-weight: 500; user-select: none; }
+  #multipuls-v3 .mp-key[data-key="backspace"] { font-size: 25px; }
+  #multipuls-v3 .mp-key[data-key="submit"] { display: flex; align-items: center; justify-content: center; gap: 7px; background: var(--mp-lime); color: #17211a; }
+  #multipuls-v3 .mp-key[data-key="submit"] small { font-size: 12px; font-weight: 700; }
+  #multipuls-v3 .mp-key:disabled { opacity: .38; }
+  #multipuls-v3 .mp-footnote { text-align: center; margin-top: 13px; color: var(--mp-muted); font-size: 11px; }
+  #multipuls-v3 .mp-question-card[data-result="correct"] { background: #254c39; }
+  #multipuls-v3 .mp-question-card[data-result="correct"] .mp-status strong { color: var(--mp-green); }
+  #multipuls-v3 .mp-question-card[data-result="wrong"], #multipuls-v3 .mp-question-card[data-result="timeout"] { background: #4c2c32; }
+  #multipuls-v3 .mp-question-card[data-result="wrong"] .mp-status strong, #multipuls-v3 .mp-question-card[data-result="timeout"] .mp-status strong { color: var(--mp-red); }
+  #multipuls-v3 .mp-question-card[data-result="correct"] .mp-answer-box output { color: var(--mp-green); }
+  #multipuls-v3 .mp-question-card[data-result="wrong"] .mp-answer-box output, #multipuls-v3 .mp-question-card[data-result="timeout"] .mp-answer-box output { color: var(--mp-red); }
+  #multipuls-v3 .mp-question-card[data-result="correct"] .mp-equation { animation: mp-pop-v3 .23s ease-out; }
+  #multipuls-v3 .mp-question-card[data-result="wrong"] .mp-answer-box { animation: mp-shake-v3 .22s ease-out; }
+  #multipuls-v3 .mp-question-card[data-urgent="true"] .mp-time { color: var(--mp-red); }
+  #multipuls-v3 .mp-question-card[data-urgent="true"] [data-ui="timer-fill"] { background: var(--mp-red); }
+  #multipuls-v3 .mp-panel { padding: 16px; border: 1px solid var(--mp-line); border-radius: 22px; background: linear-gradient(180deg, #1a2b2d, #122022); }
+  #multipuls-v3 .mp-panel-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+  #multipuls-v3 .mp-panel-heading > div { min-width: 0; }
+  #multipuls-v3 .mp-panel h1 { font-size: 23px; line-height: 1.2; letter-spacing: -.6px; margin: 2px 0 6px; overflow-wrap: anywhere; }
+  #multipuls-v3 .mp-panel-heading p { color: var(--mp-muted); font-size: 11px; }
+  #multipuls-v3 .mp-section-heading p { color: var(--mp-muted); font-size: 13px; }
+  #multipuls-v3 .mp-eyebrow { font-size: 11px; letter-spacing: 1.3px; color: var(--mp-lime); }
+  #multipuls-v3 fieldset { min-width: 0; padding: 17px 0 0; border: 0; border-top: 1px solid #2c4142; margin: 18px 0 0; }
+  #multipuls-v3 legend { padding: 0; font-size: 14px; font-weight: 600; margin-bottom: 10px; }
+  #multipuls-v3 .mp-selection-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 2px 12px; margin: -7px 0 7px; }
+  #multipuls-v3 .mp-text-button { background: transparent; padding: 4px 0; min-height: 44px; font-size: 12px; color: var(--mp-lime); }
+  #multipuls-v3 .mp-selection-actions > span { margin-left: auto; color: var(--mp-muted); font-size: 11px; }
+  #multipuls-v3 .mp-table-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 6px; }
+  #multipuls-v3 .mp-table-button { min-height: 47px; border-radius: 12px; background: var(--mp-key); font-size: 18px; }
+  #multipuls-v3 .mp-table-button[aria-pressed="true"] { color: #17211a; background: linear-gradient(135deg, var(--mp-lime), #9ed771); }
+  #multipuls-v3 .mp-setting-hint { margin-top: 9px; color: var(--mp-muted); font-size: 11px; }
+  #multipuls-v3 .mp-validation { color: var(--mp-red); margin-top: 6px; font-size: 12px; }
+  #multipuls-v3 select { display: block; min-height: 48px; width: 100%; max-width: 100%; padding: 10px 12px; border: 1px solid var(--mp-line); background: var(--mp-key); border-radius: 12px; font-size: 16px; }
+  #multipuls-v3 .mp-language-setting select { margin-top: 9px; }
+  #multipuls-v3 .mp-goal-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+  #multipuls-v3 .mp-goal-button { min-height: 44px; border-radius: 11px; background: var(--mp-key); font-size: 16px; }
+  #multipuls-v3 .mp-goal-button[aria-pressed="true"] { background: var(--mp-lime); color: #17211a; }
+  #multipuls-v3 .mp-change-note { margin: 24px 0 12px; color: var(--mp-muted); font-size: 12px; }
+  #multipuls-v3 .mp-full { width: 100%; }
+  #multipuls-v3 .mp-secondary { min-height: 44px; padding: 10px; border-radius: 12px; margin-top: 7px; background: var(--mp-key); }
+  #multipuls-v3 .mp-reset-row { margin-top: 20px; padding-top: 13px; border-top: 1px solid var(--mp-line); text-align: center; }
+  #multipuls-v3 .mp-reset-button { color: var(--mp-red); background: transparent; padding: 10px; min-height: 44px; font-size: 12px; }
+  #multipuls-v3 .mp-reset-row > span { display: block; font-size: 11px; color: var(--mp-muted); }
+  #multipuls-v3 .mp-reset-button { width: 100%; border: 1px solid #74464c; background: #35242a; border-radius: 12px; }
+  #multipuls-v3 .mp-reset-row > span { margin-top: 8px; }
+  #multipuls-v3 .mp-share-notice { margin: -8px 0 16px; color: var(--mp-muted); font-size: 12px; }
+  #multipuls-v3 .mp-share-link { display: block; width: 100%; min-width: 0; margin: -6px 0 16px; padding: 12px; border: 1px solid var(--mp-line); border-radius: 10px; background: #101d20; color: var(--mp-text); font: inherit; font-size: 16px; }
+  #multipuls-v3 .mp-results { padding-top: 9px; text-align: center; }
+  #multipuls-v3 .mp-trophy { display: grid; place-items: center; width: 76px; height: 76px; border-radius: 24px; margin: 0 auto 18px; background: #2d4232; font-size: 40px; }
+  #multipuls-v3 .mp-results h1 { font-size: 40px; line-height: 1.15; letter-spacing: -1.5px; margin: 8px 0 10px; }
+  #multipuls-v3 .mp-results > p { font-size: 13px; color: var(--mp-muted); }
+  #multipuls-v3 .mp-result-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; margin: 24px 0; text-align: left; }
+  #multipuls-v3 .mp-result-grid > div { background: var(--mp-panel); padding: 13px 15px; border-radius: 14px; }
+  #multipuls-v3 .mp-result-grid dt { color: var(--mp-muted); font-size: 11px; }
+  #multipuls-v3 .mp-result-grid dd { margin: 5px 0 0; font-size: 25px; font-weight: 600; font-variant-numeric: tabular-nums; }
+  #multipuls-v3 .mp-hardest { text-align: left; margin-bottom: 24px; }
+  #multipuls-v3 .mp-hardest h2 { margin-bottom: 10px; font-size: 14px; font-weight: 600; }
+  #multipuls-v3 .mp-hardest-row { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 11px 0; border-bottom: 1px solid var(--mp-line); }
+  #multipuls-v3 .mp-hardest-row strong { font-size: 18px; font-weight: 500; }
+  #multipuls-v3 .mp-hardest-row span, #multipuls-v3 .mp-hardest p { color: var(--mp-muted); font-size: 12px; }
+  #multipuls-v3 .mp-visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  @media (hover: hover) {
+    #multipuls-v3 .mp-key:hover:not(:disabled), #multipuls-v3 .mp-secondary:hover { background: var(--mp-key-hover); }
+    #multipuls-v3 .mp-key[data-key="submit"]:hover:not(:disabled), #multipuls-v3 .mp-primary:hover { background: #e1ffb5; }
+  }
+  @media (max-width: 370px) {
+    #multipuls-v3 { padding: 14px; border-radius: 22px; }
+    #multipuls-v3 .mp-header { margin-bottom: 18px; }
+    #multipuls-v3 .mp-brand { gap: 7px; }
+    #multipuls-v3 .mp-logo { width: 36px; height: 36px; }
+    #multipuls-v3 .mp-panel { padding: 13px; }
+    #multipuls-v3 .mp-time-actions { gap: 5px; }
+    #multipuls-v3 .mp-pause-button { padding: 0 7px; }
+    #multipuls-v3 .mp-question-card { padding: 14px 14px 0; }
+    #multipuls-v3 .mp-equation { font-size: 66px; gap: 12px; }
+    #multipuls-v3 .mp-question-top { margin-top: 16px; letter-spacing: 1px; }
+    #multipuls-v3 .mp-key { min-height: 53px; }
+    #multipuls-v3 .mp-footnote { font-size: 11px; }
+  }
+  @keyframes mp-pop-v3 { 0% { transform: scale(.96); } 60% { transform: scale(1.035); } 100% { transform: scale(1); } }
+  @keyframes mp-shake-v3 { 0%, 100% { transform: translateX(0); } 30% { transform: translateX(-4px); } 70% { transform: translateX(4px); } }
+  @media (prefers-reduced-motion: reduce) { #multipuls-v3 *, #multipuls-v3 *::before, #multipuls-v3 *::after { animation: none !important; transition: none !important; } }

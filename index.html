@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="sv">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#111c1e">
+  <meta name="description" content="Build multiplication fluency with Multipuls: adaptive practice, progress and short rounds.">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Multipuls">
+  <title>Multipuls</title>
+  <link rel="manifest" href="./manifest.webmanifest?v=3">
+  <link rel="icon" type="image/png" href="./icons/icon-192.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="./icons/icon-180.png">
+  <link rel="stylesheet" href="./styles.css?v=3">
+  <script defer src="./storage.js?v=3"></script>
+  <script defer src="./app.js?v=3"></script>
+  <script defer src="./share.js?v=3"></script>
+  <script defer src="./pwa.js?v=3"></script>
+</head>
+<body>
+<div id="multipuls-v3" lang="sv">
+  <header class="mp-header">
+    <div class="mp-brand"><img class="mp-logo" data-ui="app-icon" width="42" height="42" alt="" aria-hidden="true" src="./assets/header-x-192.png"><div><strong>Multipuls</strong><div class="mp-brand-sub"><span data-i18n="tagline">Lär. Spela. Bemästra.</span> <small>v3</small></div></div></div>
+    <div class="mp-top-actions">
+      <button type="button" class="mp-icon-button" data-ui="share-toggle" data-i18n-aria="share" aria-label="Dela"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V3"/><path d="m7.5 7.5 4.5-4.5 4.5 4.5"/><path d="M5 11v8a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-8"/></svg></button>
+      <button type="button" class="mp-icon-button" data-ui="settings-toggle" data-i18n-aria="settings" aria-label="Inställningar" aria-expanded="false" aria-controls="mp-v3-settings">⚙</button>
+    </div>
+  </header>
+  <p class="mp-save-notice" data-ui="save-notice" role="status" hidden></p>
+  <p class="mp-share-notice" data-ui="share-notice" role="status" hidden></p>
+  <input class="mp-share-link" data-ui="share-link" data-i18n-aria="appLink" aria-label="Länk till Multipuls" type="url" readonly hidden>
+
+  <main data-ui="game">
+    <section class="mp-overview" aria-label="Din omgång">
+      <div class="mp-metrics">
+        <div><span class="mp-label" data-i18n="mastered">Bemästrade</span><strong><span data-ui="mastered">0</span><span class="mp-muted"> / <span data-ui="total">55</span></span></strong></div>
+        <div><span class="mp-label" data-i18n="streak">Svit</span><strong><span data-ui="streak">0</span> <span class="mp-flame" aria-hidden="true">🔥</span></strong></div>
+        <div><span class="mp-label" data-i18n="accuracy">Träffsäkerhet</span><strong data-ui="accuracy">—</strong></div>
+      </div>
+      <div class="mp-mastery-track" data-ui="mastery-progress" role="progressbar" aria-label="Bemästrade talpar" aria-valuemin="0" aria-valuemax="55" aria-valuenow="0"><div data-ui="mastery-fill"></div></div>
+    </section>
+
+    <section class="mp-play" data-ui="play" aria-label="Multiplikationsträning">
+      <div class="mp-question-card" data-ui="question-card">
+        <div class="mp-timer-heading"><span data-ui="mode-label">1–10 · Normal</span><div class="mp-time-actions"><span class="mp-time" data-ui="time-label">6,0 s</span><button type="button" class="mp-pause-button" data-ui="pause" hidden><span aria-hidden="true">Ⅱ</span> <span data-i18n="pause">Pausa</span></button></div></div>
+        <div class="mp-timer-track" data-ui="timer-track" aria-hidden="true"><div data-ui="timer-fill"></div></div>
+        <div class="mp-question-top"><span data-ui="question-label">REDO NÄR DU ÄR</span><span class="mp-dots" data-ui="pair-progress" aria-label="0 av 3 rätt i rad"></span></div>
+        <div class="mp-equation" data-ui="equation" aria-live="polite" aria-atomic="true"><span>7</span><span class="mp-times">×</span><span>8</span></div>
+        <div class="mp-answer-box"><span data-i18n="yourAnswer">Ditt svar</span><output data-ui="answer" data-i18n-aria="yourAnswer" aria-label="Ditt svar" aria-live="polite">?</output></div>
+        <div class="mp-status" aria-live="polite" aria-atomic="true">
+          <button type="button" class="mp-primary mp-start" data-ui="start">Börja spela <span aria-hidden="true">→</span></button>
+          <div data-ui="feedback" hidden><strong data-ui="feedback-title"></strong><span data-ui="feedback-detail"></span></div>
+        </div>
+      </div>
+      <div class="mp-keypad" data-ui="keypad" role="group" aria-label="Sifferknappar"></div>
+      <p class="mp-footnote" data-ui="footnote">3 rätt i rad per talpar. Svåra par kommer oftare.</p>
+    </section>
+
+    <section class="mp-results" data-ui="results" hidden aria-labelledby="mp-v3-result-title">
+      <div class="mp-trophy" aria-hidden="true">🏆</div>
+      <span class="mp-eyebrow" data-i18n="allMastered">ALLA PAR BEMÄSTRADE</span>
+      <h1 id="mp-v3-result-title" data-i18n="completeTitle">Alla sitter!</h1>
+      <p data-ui="result-subtitle"></p>
+      <dl class="mp-result-grid">
+        <div><dt data-i18n="questions">Frågor</dt><dd data-ui="result-questions"></dd></div>
+        <div><dt data-i18n="accuracy">Träffsäkerhet</dt><dd data-ui="result-accuracy"></dd></div>
+        <div><dt data-i18n="correctCount">Rätt</dt><dd data-ui="result-correct"></dd></div>
+        <div><dt data-i18n="wrongCount">Fel / tid ute</dt><dd data-ui="result-wrong"></dd></div>
+        <div><dt data-i18n="bestStreak">Längsta svit</dt><dd data-ui="result-best"></dd></div>
+        <div><dt data-i18n="averageTime">Snittid per svar</dt><dd data-ui="result-time"></dd></div>
+      </dl>
+      <div class="mp-hardest"><h2 data-i18n="hardest">Mest att jobba med</h2><div data-ui="hardest"></div></div>
+      <button type="button" class="mp-primary mp-full" data-ui="replay" data-i18n="replay">Spela igen →</button>
+    </section>
+  </main>
+
+  <section id="mp-v3-settings" class="mp-settings mp-panel" data-ui="settings" hidden aria-labelledby="mp-v3-settings-title">
+    <div class="mp-panel-heading"><div><h1 id="mp-v3-settings-title" data-i18n="settings">Inställningar</h1><p data-i18n="settingsSub">Anpassa hur du tränar</p></div><button type="button" class="mp-icon-button" data-ui="close-settings" data-i18n-aria="close" aria-label="Stäng">×</button></div>
+    <fieldset class="mp-language-setting">
+      <legend><label for="mp-v3-language" data-i18n="language">Språk</label></legend>
+      <p class="mp-setting-hint" data-i18n="languageSub">Väljs automatiskt första gången. Du kan ändra när du vill.</p>
+      <select id="mp-v3-language" data-ui="language" data-i18n-aria="language" aria-label="Språk"></select>
+    </fieldset>
+    <fieldset>
+      <legend data-i18n="tables">Multiplikationstabeller</legend>
+      <div class="mp-selection-actions"><button type="button" class="mp-text-button" data-ui="select-all" data-i18n="selectAll">Välj alla</button><button type="button" class="mp-text-button" data-ui="select-hard" data-i18n="selectHard">Bara 6–9</button><span data-ui="selection-count">55 unika par</span></div>
+      <div class="mp-table-grid" data-ui="tables"></div>
+      <p class="mp-setting-hint" data-i18n="minTable">Minst en tabell måste vara vald.</p>
+      <p class="mp-validation" data-ui="table-error" role="alert" hidden></p>
+    </fieldset>
+    <fieldset>
+      <legend><label for="mp-v3-difficulty" data-i18n="timeLimit">Tid per fråga</label></legend>
+      <select id="mp-v3-difficulty" data-ui="difficulty">
+        <option value="none">Ingen tidsgräns</option>
+        <option value="easy">Lätt · 10 sekunder</option>
+        <option value="normal" selected>Normal · 6 sekunder</option>
+        <option value="hard">Svår · 4 sekunder</option>
+        <option value="expert">Expert · 2,5 sekunder</option>
+      </select>
+    </fieldset>
+    <fieldset>
+      <legend data-i18n="masterTitle">Rätt i rad för att bemästra</legend>
+      <div class="mp-goal-grid" data-ui="goals"></div>
+      <p class="mp-setting-hint" data-i18n="masterHint">Ett fel nollställer parets svit. Klara par lämnar kön.</p>
+    </fieldset>
+    <p class="mp-change-note" data-i18n="settingsKept">Valen gäller direkt. Dina framsteg behålls.</p>
+    <button type="button" class="mp-secondary mp-full" data-ui="back-settings" data-i18n="backToGame">Tillbaka till spelet</button>
+    <div class="mp-reset-row"><button type="button" class="mp-reset-button" data-ui="reset" data-i18n="reset">Återställ aktuell omgång</button><span data-i18n="resetHint">Behåll språk och träningsval</span></div>
+  </section>
+
+</div>
+
+<noscript><p class="mp-noscript">Enable JavaScript to play Multipuls.</p></noscript>
+</body>
+</html>

@@ -1,0 +1,54 @@
+{
+  "version": "v3",
+  "method": "Static release checks and deterministic service-worker event tests with real Response/Request objects and in-memory Cache/Fetch doubles. No browser or network execution.",
+  "tests": [
+    {
+      "name": "PWA 01 · Every shipped script and manifest parses; HTML dependencies exist at repo root",
+      "status": "PASS"
+    },
+    {
+      "name": "PWA 02 · Manifest has a distinct identity, valid install icons and in-scope launch paths",
+      "status": "PASS"
+    },
+    {
+      "name": "PWA 03 · First installation precaches all required files with fresh requests",
+      "status": "PASS"
+    },
+    {
+      "name": "PWA 04 · HTML navigation is network-first and saves a successful new response",
+      "status": "PASS"
+    },
+    {
+      "name": "PWA 05 · Offline root and versioned launches use the cached HTML and static assets",
+      "status": "PASS"
+    },
+    {
+      "name": "PWA 06 · Server errors cannot replace a working offline page",
+      "status": "PASS"
+    },
+    {
+      "name": "PWA 07 · Activation deletes only older Multipuls caches within this app path",
+      "status": "PASS"
+    },
+    {
+      "name": "PWA 08 · Foreign URLs, other app paths, unknown routes and POST requests are untouched",
+      "status": "PASS"
+    },
+    {
+      "name": "PWA 09 · Versioned script URLs have distinct cache entries during updates",
+      "status": "PASS"
+    },
+    {
+      "name": "PWA 10 · Failed installation does not activate or delete the older cache",
+      "status": "PASS"
+    },
+    {
+      "name": "PWA 11 · Cache-write failure still delivers the successful network page",
+      "status": "PASS"
+    },
+    {
+      "name": "PWA 12 · Cache and precache URLs follow the registered project subdirectory",
+      "status": "PASS"
+    }
+  ]
+}

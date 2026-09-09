@@ -1,0 +1,218 @@
+{
+  "version": "v3",
+  "method": "Deterministic Node VM tests with parsed markup, a minimal DOM double and stubbed device-sharing APIs. No browser execution or real messages sent.",
+  "tests": [
+    {
+      "name": "V2.1 · Pause reuses the starting screen and button; only the action label changes",
+      "status": "PASS"
+    },
+    {
+      "name": "01 · All ten tables; 55 canonical pairs and 100 presentations",
+      "status": "PASS"
+    },
+    {
+      "name": "02 · Defaults are tables 1–10, Normal 6 s, mastery 3",
+      "status": "PASS"
+    },
+    {
+      "name": "03 · Ten digits + backspace + submit; three-digit cap; no premature submission",
+      "status": "PASS"
+    },
+    {
+      "name": "04 · Settings discard unanswered question, keep all scores, and require Continue",
+      "status": "PASS"
+    },
+    {
+      "name": "05 · Table choices, 6–9 preset, all, and presentation order respect selection",
+      "status": "PASS"
+    },
+    {
+      "name": "06 · Last active table cannot be removed; invalid empty configuration rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "07 · Correct answer scores once; input locks during green feedback",
+      "status": "PASS"
+    },
+    {
+      "name": "08 · Wrong answer shows red + correction; updates accuracy and resets global streak",
+      "status": "PASS"
+    },
+    {
+      "name": "09 · Timeout is wrong once, reveals answer, and advances after 1050 ms",
+      "status": "PASS"
+    },
+    {
+      "name": "10 · Three consecutive correct answers master a pair; intervening error resets it",
+      "status": "PASS"
+    },
+    {
+      "name": "11 · Weighted draw favours frequent/recent errors and subtly favours slow answers",
+      "status": "PASS"
+    },
+    {
+      "name": "12 · Cancelled and already-queued timers cannot score a subsequent question",
+      "status": "PASS"
+    },
+    {
+      "name": "13 · Reset clears the round and all timers; old callbacks remain inert",
+      "status": "PASS"
+    },
+    {
+      "name": "14 · Full default round: all 55 mastered after 165 correct; result metrics and replay",
+      "status": "PASS"
+    },
+    {
+      "name": "15 · Every requested DOM reference and accessible ID resolves",
+      "status": "PASS"
+    },
+    {
+      "name": "16 · JavaScript parses; real page uses local files and no fixed or viewport-height layout",
+      "status": "PASS"
+    },
+    {
+      "name": "Additional · No time limit, keyboard digits/backspace/Enter, one-digit and 100 answers",
+      "status": "PASS"
+    },
+    {
+      "name": "Additional · Settings during feedback preserves scored answer; changed goal keeps scores",
+      "status": "PASS"
+    },
+    {
+      "name": "Additional · Hidden page pauses until explicit resume; skipped time is excluded",
+      "status": "PASS"
+    },
+    {
+      "name": "Additional · SafeClock clearTimeout and clearInterval; old feedback callback inert",
+      "status": "PASS"
+    },
+    {
+      "name": "Additional · Stale score after reset rejected; question IDs never reused",
+      "status": "PASS"
+    },
+    {
+      "name": "V2 · Manual pause discards partial input without changing attempts, streak or mastery",
+      "status": "PASS"
+    },
+    {
+      "name": "V2 · Pausing during feedback keeps the result but kills the next-question callback",
+      "status": "PASS"
+    },
+    {
+      "name": "V2 · Pausing the final feedback still opens complete results exactly once",
+      "status": "PASS"
+    },
+    {
+      "name": "V2 · Hidden document is detected even if a timeout callback runs before visibilitychange",
+      "status": "PASS"
+    },
+    {
+      "name": "V2 · blur/pagehide/pageshow preserve chosen settings and never auto-resume",
+      "status": "PASS"
+    },
+    {
+      "name": "V2 · Table/time/mastery changes keep per-pair history, attempts and response times",
+      "status": "PASS"
+    },
+    {
+      "name": "V2 · All 13 reference languages have matching keys and placeholder sets",
+      "status": "PASS"
+    },
+    {
+      "name": "V2 · Every language updates the actual controls and preserves round statistics",
+      "status": "PASS"
+    },
+    {
+      "name": "V2.2 · App Block keeps the game visible and explains native-sharing availability",
+      "status": "PASS"
+    },
+    {
+      "name": "V2.2 · Settings toggles and sharing return to the same paused game without a submenu",
+      "status": "PASS"
+    },
+    {
+      "name": "V2 · Reset keeps language and practice settings; old callbacks cannot resurrect the round",
+      "status": "PASS"
+    },
+    {
+      "name": "V2 · More mastery required after completion returns to Continue with the existing record",
+      "status": "PASS"
+    },
+    {
+      "name": "V3 · Header uses the frameless X asset and keeps its existing dimensions",
+      "status": "PASS"
+    },
+    {
+      "name": "V2.2 · Published link uses the current app address, excluding query, hash and index filename",
+      "status": "PASS"
+    },
+    {
+      "name": "V3 · Settings survive closing before the first game and do not start a countdown",
+      "status": "PASS"
+    },
+    {
+      "name": "V3 · Hard close during an unanswered question restores scores but skips that question",
+      "status": "PASS"
+    },
+    {
+      "name": "V3 · Feedback is saved immediately; reload cannot lose or double-count a submitted answer",
+      "status": "PASS"
+    },
+    {
+      "name": "V3 · Pair streaks, response times and inactive-table history round-trip faithfully",
+      "status": "PASS"
+    },
+    {
+      "name": "V3 · Full completed round restores the result screen, and replay persists a fresh round",
+      "status": "PASS"
+    },
+    {
+      "name": "V3 · Reset removes the previous round while preserving language and practice choices",
+      "status": "PASS"
+    },
+    {
+      "name": "V3 · Storage exceptions do not break play; an accurate warning appears",
+      "status": "PASS"
+    },
+    {
+      "name": "V3 · Corrupt or future data is preserved until an explicit reset",
+      "status": "PASS"
+    },
+    {
+      "name": "V3 · Invalid snapshot counts are rejected atomically without damaging the live training",
+      "status": "PASS"
+    },
+    {
+      "name": "V3 · Session keys are stable across releases and separate applications on the same host",
+      "status": "PASS"
+    },
+    {
+      "name": "V2.2 · Native share sends exactly the app title and link; never results or settings",
+      "status": "PASS"
+    },
+    {
+      "name": "V2.2 · Pending native share blocks duplicate requests and resume; stale timers stay cancelled",
+      "status": "PASS"
+    },
+    {
+      "name": "V2.2 · Cancelling the native sheet does not copy a link or claim successful sharing",
+      "status": "PASS"
+    },
+    {
+      "name": "V2.2 · Clipboard fallback copies only the link and confirms only after success",
+      "status": "PASS"
+    },
+    {
+      "name": "V2.2 · Unsupported or denied native/clipboard APIs expose only a selectable link",
+      "status": "PASS"
+    },
+    {
+      "name": "V2.2 · Unpublished files cannot share a guessed or preview URL",
+      "status": "PASS"
+    },
+    {
+      "name": "V3 · Real script boot order installs persistence, native sharing and the service worker",
+      "status": "PASS"
+    }
+  ]
+}

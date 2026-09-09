@@ -1,0 +1,35 @@
+{
+  "version": "v3",
+  "status": "READY_FOR_GITHUB_PAGES_UPLOAD",
+  "base_release": "v2.3",
+  "base_sha256": "0c195a1a4fbd0224abab9af264f44b332b7d7dee6449cb2d293a23fe179d6f14",
+  "automated_checks_passed": 65,
+  "regression_scope": {
+    "adaptive_selector_unchanged": true,
+    "timer_unchanged": true,
+    "header_asset_unchanged": true,
+    "previous_release_untouched": true
+  },
+  "browser_verification": "Not performed: preview URL blocked by the browser policy. Post-deployment Safari, Home Screen and offline checks are documented in README.md.",
+  "file_sha256": {
+    ".nojekyll": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "README.md": "8168a95f588f59649937450793a3a3164928f7329c3acb62125cb5ba244d4f02",
+    "app.js": "8faa13a7926532bb213a94814af1bda2938c43968935f9b8b3003150b2bb36ba",
+    "assets/header-x-192.png": "1a5e851ea12c5c67ce3072af041f859ae10debb7dd7fe17dee079e686f33cc48",
+    "icons/icon-180.png": "bbd03749a3cc7c659551c95670696a8e65e56355794d42001ad8a797b84014ab",
+    "icons/icon-192.png": "ce9158113769eaf92c8a7d2da8d937c749a50949b42b360cd6c40488efbf7293",
+    "icons/icon-512.png": "b67e302f13eef7ef8cbc6dc1d764075433373b2377f6cb286cefc0d0d84d276f",
+    "index.html": "d367850da66bfceadab291696b61e59944b27f54332cff426aa8dda4d0885f31",
+    "manifest.webmanifest": "a4a5a430cee0c4917f1cf63c441ac14ca718b2b843dac4bd3ca8d1c394b5b1f0",
+    "pwa.js": "f81cb03f8c6a01afbcfbd5797f26032388f9436d36c56ee6e54de0cb3d0cdb80",
+    "service-worker.js": "7c91171280e7e2dbad16ed6654344ce6d2f388c571bc1bfef92e0b7d2057059f",
+    "share.js": "223ecf594687dbef2e0f7298c8ab521e994274af5f9df0329c53ec6609011940",
+    "storage.js": "53960d9151411e34c01b9b8f8833d153c558e82b2e42fc68ea4ba42a29fd1409",
+    "styles.css": "0a3628455a4489228ce312d434c036f52a6757becd4303f51dc602b75cc1bbca",
+    "tests/parse-markup.py": "9ee6c827b42fda872bb6ce48acce8f71a4efd29564abd1943880bf3562d3dcef",
+    "tests/pwa-results.json": "bd10ebd56e8d8d9dfb51d20566f0dc67d368e4efae2da113c3daaa5b1900c326",
+    "tests/training-results.json": "e7686d618856fdeb68416e62cd12c6360fca6dbebc880f31c0d17c976970c075",
+    "tests/verify-app.cjs": "5911492b7b16fb28641fa5f9fda8339e319133630c0b39adeaf190d277a73f2e",
+    "tests/verify-pwa.cjs": "482c7ece7ce71e4373585168ba18d2c909336b741f7717ff48b86d3eef35c41b"
+  }
+}
