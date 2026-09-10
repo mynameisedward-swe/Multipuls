@@ -1,0 +1,79 @@
+{
+  "version": "v3.4",
+  "method": "CSS box-model estimates, assuming one-line labels and standard font line metrics. Not browser/device measurements. The app checks actual root height including wrapped text; integration checks use independent synthetic heights.",
+  "original_standard_play_height_px": 852,
+  "original_pause_row_height_reduction_px": 27.2,
+  "estimated_portrait_height_including_default_body_padding_px": {
+    "original_390_width": 852,
+    "original_320_width": 798.4,
+    "compact_390_width": 687,
+    "compact_320_width": 671.4,
+    "tight": 600.2,
+    "small": 517.8
+  },
+  "examples": [
+    {
+      "viewport": [
+        320,
+        568
+      ],
+      "estimated_density": "small",
+      "estimated_content_height": 517.8
+    },
+    {
+      "viewport": [
+        360,
+        528
+      ],
+      "estimated_density": "small",
+      "estimated_content_height": 517.8
+    },
+    {
+      "viewport": [
+        390,
+        667
+      ],
+      "estimated_density": "tight",
+      "estimated_content_height": 600.2
+    },
+    {
+      "viewport": [
+        390,
+        844
+      ],
+      "safe_area_top_bottom": [
+        47,
+        34
+      ],
+      "estimated_density": "compact",
+      "estimated_content_height": 744
+    },
+    {
+      "viewport": [
+        430,
+        932
+      ],
+      "safe_area_top_bottom": [
+        59,
+        34
+      ],
+      "estimated_density": "",
+      "estimated_content_height": 921
+    },
+    {
+      "viewport": [
+        736,
+        360
+      ],
+      "estimated_density": "small, two columns",
+      "estimated_content_height": 315.8
+    }
+  ],
+  "safeguards": [
+    "Pause retains layout space when hidden; status reserves the start/continue action height.",
+    "Numeric keys stay at least 44px high.",
+    "Settings and results remain in natural, scrollable document flow.",
+    "No page overflow clipping or forced viewport height. Zoom and exceptionally small views retain scrolling when necessary."
+  ],
+  "physical_phone_check": "Check browser bars visible/hidden and standalone on the published v3.4; no physical-device test was performed."
+}

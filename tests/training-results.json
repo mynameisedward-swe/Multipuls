@@ -1,5 +1,5 @@
 {
-  "version": "v3.3",
+  "version": "v3.4",
   "method": "Deterministic Node VM tests with parsed markup, DOM and text-geometry doubles, and stubbed device-sharing APIs. No browser execution or real messages sent.",
   "tests": [
     {
@@ -264,6 +264,38 @@
     },
     {
       "name": "V3.3 · Resizing a revealed equation refits it without changing feedback timers, scores or saved data",
+      "status": "PASS"
+    },
+    {
+      "name": "V3.4 · Settings focuses Close, never the language picker; language is the last setting",
+      "status": "PASS"
+    },
+    {
+      "name": "V3.4 · Automatic reveal defaults off; preference survives reload and reset without altering history",
+      "status": "PASS"
+    },
+    {
+      "name": "V3.4 · Automatic full equations on wrong answers and timeouts retain miss scoring and feedback duration",
+      "status": "PASS"
+    },
+    {
+      "name": "V3.4 · Pause, Settings, leaving and reset clear automatically revealed equations and cancel callbacks",
+      "status": "PASS"
+    },
+    {
+      "name": "V3.4 · Fit chooses the roomiest layout using visible height and safe-area padding",
+      "status": "PASS"
+    },
+    {
+      "name": "V3.4 · Visible-height changes refit equations without touching timers or scores; zoom remains usable",
+      "status": "PASS"
+    },
+    {
+      "name": "V3.4 · Settings/results scroll normally; undersized or zoomed views never clip controls",
+      "status": "PASS"
+    },
+    {
+      "name": "V3.4 · CSS reserves the hidden Pause button and touch-size controls without a clipped page",
       "status": "PASS"
     },
     {

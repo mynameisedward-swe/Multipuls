@@ -67,12 +67,13 @@ class Element {
   closest(tag){return this.tagName===tag.toUpperCase()?this:this.parentElement?.closest(tag)||null;}
   getBoundingClientRect(){
     // Deterministic layout double for font-fitting behavior; no browser layout.
+    if(this.id==="multipuls-v3")return{width:Math.min(this.ownerDocument.viewport,476),height:this.ownerDocument.layout.heights[this.dataset.density||""]};
     const equation=this.dataset.ui==="equation"?this:this.parentElement;
     if(equation?.dataset.ui!=="equation")throw Error("Unexpected geometry request");
     for(let node=this;node;node=node.parentElement)if(node.hidden)return{width:0};
     const viewport=this.ownerDocument.viewport,narrow=viewport<=370;
     if(this===equation)return{width:Math.min(viewport,476)-(narrow?28:40)-(narrow?28:36)};
-    const size=parseFloat(equation.style.fontSize)||(narrow?66:79),symbol=this.className==="mp-times";
+    const size=parseFloat(equation.style.fontSize)||this.ownerDocument.baseFont(),symbol=this.className==="mp-times";
     const tracking=symbol?0:equation.dataset.revealed==="true"?1.5:4;
     return{width:Math.max(0,this.textContent.length*(size*(symbol ? .7*.84 : .7)-tracking))};
   }
@@ -82,19 +83,26 @@ class Element {
   focus(){this.ownerDocument.activeElement=this;}
   select(){this.selectionStart=0;this.selectionEnd=String(this.value).length;}
 }
-function makeApp(languages=["sv-SE"],shareAdapter=null,store=null,web=null,viewport=390){
-  const time=new FakeTime();const doc={visibilityState:"visible",listeners:{},activeElement:null,pending:[],viewport};
+function makeApp(languages=["sv-SE"],shareAdapter=null,store=null,web=null,viewport=390,layout=null){
+  const time=new FakeTime();const doc={visibilityState:"visible",listeners:{},activeElement:null,pending:[],viewport,layout};
   doc.addEventListener=(type,fn)=>(doc.listeners[type]??=[]).push(fn);
   doc.emit=(type,props={})=>{const event={target:doc.activeElement||doc.root,preventDefault(){this.defaultPrevented=true;},...props};for(const fn of doc.listeners[type]||[])fn(event);return event;};
   doc.createElement=tag=>new Element(tag,{},doc);
   function build(node){const element=new Element(node.tag,node.attrs,doc);element._text=node.text||"";element.append(...node.children.map(build));return element;}
   doc.root=build(markup);doc.getElementById=id=>doc.root.find(node=>node.id===id);
+  doc.documentElement=doc.root;doc.body=doc.root.find(node=>node.tagName==="BODY");
+  doc.baseFont=()=>{const density=doc.getElementById("multipuls-v3").dataset.density;return density==="small"?50:density==="tight"?60:doc.viewport<=370?66:79;};
   if(shareAdapter)doc.getElementById("multipuls-v3").shareMultipulsLink=shareAdapter;
   if(store)doc.getElementById("multipuls-v3").multipulsStore=store;
   const window={listeners:{},addEventListener(type,fn){(this.listeners[type]??=[]).push(fn);}};
+  if(layout){
+    window.innerHeight=layout.height;
+    if(layout.visual!==false)window.visualViewport={height:layout.height,scale:1,listeners:{},addEventListener(type,fn){(this.listeners[type]??=[]).push(fn);}};
+  }
   window.getComputedStyle=element=>{
+    if(element===doc.body){const minimum=doc.root.dataset.mpDensity==="small"?4:12;return{paddingTop:Math.max(minimum,layout.safeTop||0)+"px",paddingBottom:Math.max(minimum,layout.safeBottom||0)+"px"};}
     assert.equal(element.dataset.ui,"equation");const narrow=doc.viewport<=370,revealed=element.dataset.revealed==="true";
-    return{fontSize:element.style.fontSize||((narrow?66:79)+"px"),columnGap:(revealed?(narrow?5:7):(narrow?12:15))+"px",paddingLeft:"0px",paddingRight:"0px"};
+    return{fontSize:element.style.fontSize||(doc.baseFont()+"px"),columnGap:(revealed?(narrow?5:7):(narrow?12:15))+"px",paddingLeft:"0px",paddingRight:"0px"};
   };
   if(web){window.location=new URL(web.href);window.localStorage=web.storage;}
   const math=Object.create(Math);let seed=12345;math.random=()=>((seed=(seed*1664525+1013904223)>>>0)/4294967296);
@@ -109,7 +117,7 @@ function makeApp(languages=["sv-SE"],shareAdapter=null,store=null,web=null,viewp
   const answer=(value=expected(),responseMs=100)=>{time.advance(responseMs);for(const digit of String(value))key(digit).click();key("submit").click();};
   const emitWindow=(type,props={})=>(window.listeners[type]||[]).forEach(fn=>fn(props));
   const flush=async()=>{while(doc.pending.length)await Promise.all(doc.pending.splice(0));};
-  return{time,doc,get,key,expected,answer,pairKey,emitWindow,flush};
+  return{time,doc,get,key,expected,answer,pairKey,emitWindow,flush,window};
 }
 
 function assertPausedView(app){
@@ -238,7 +246,7 @@ test("16 · JavaScript parses; real page uses local files and no fixed or viewpo
   new vm.Script(source);assert(html.startsWith("<!doctype html>"));
   assert(!/\b(localStorage|sessionStorage|indexedDB|fetch|XMLHttpRequest|WebSocket)\b|navigator\.(share|clipboard|sendBeacon)/.test(source));
   assert(!/position\s*:\s*fixed|\b\d+(?:d|s|l)?vh\b/i.test(styles+source));
-  assert(html.includes('./manifest.webmanifest?v=3.3"'));assert(html.includes('./app.js?v=3.3"'));
+  assert(html.includes('./manifest.webmanifest?v=3.4"'));assert(html.includes('./app.js?v=3.4"'));
 });
 test("Additional · No time limit, keyboard digits/backspace/Enter, one-digit and 100 answers",()=>{
   const app=makeApp();app.get("settings-toggle").click();app.get("difficulty").value="none";app.get("difficulty").dispatch("change");app.get("back-settings").click();app.get("start").click();assert.equal(app.get("time-label").textContent,"∞");assert.equal(app.time.tasks.size,0);
@@ -401,7 +409,7 @@ asyncTest("V2.2 · Unpublished files cannot share a guessed or preview URL",asyn
 
 const {createStore}=require("../storage.js");
 function memoryStorage(){const entries=new Map();return{entries,getItem:key=>entries.has(key)?entries.get(key):null,setItem:(key,value)=>entries.set(key,String(value))};}
-const sessionURL="https://example.test/Multipuls/?v=3.3";
+const sessionURL="https://example.test/Multipuls/?v=3.4";
 function savedApp(memory,language=["sv-SE"]){return makeApp(language,null,createStore(memory,sessionURL));}
 
 test("V3 · Settings survive closing before the first game and do not start a countdown",()=>{
@@ -640,11 +648,96 @@ asyncTest("V3 · Real script boot order installs persistence, native sharing and
   const second=makeApp(["en-US"],null,null,web);assertPausedView(second);assert.equal(second.get("language").value,"sv");assert.equal(second.get("streak").textContent,"1");
 });
 
+test("V3.4 · Settings focuses Close, never the language picker; language is the last setting",()=>{
+  const app=makeApp();app.get("start").click();app.get("settings-toggle").click();
+  assert.equal(app.doc.activeElement,app.get("close-settings"));assert.equal(app.time.tasks.size,0);
+  const fields=app.get("settings").children.filter(node=>node.tagName==="FIELDSET");
+  assert(fields[0].contains(app.get("tables")));assert(fields.at(-1).contains(app.get("language")));
+  app.get("language").click();app.get("language").value="en";app.get("language").dispatch("change");
+  app.get("back-settings").click();assert.equal(app.doc.activeElement,app.get("settings-toggle"));
+  assert.equal(app.get("start").textContent,"Continue playing →");
+  app.get("settings-toggle").click();assert.equal(app.doc.activeElement,app.get("close-settings"));
+  assert.equal(app.get("language").value,"en");
+});
+test("V3.4 · Automatic reveal defaults off; preference survives reload and reset without altering history",()=>{
+  const memory=memoryStorage(),store=createStore(memory,sessionURL),first=savedApp(memory);
+  assert.equal(first.get("auto-reveal").getAttribute("aria-checked"),"false");
+  first.get("start").click();first.answer(0);assert.equal(first.get("equation").children.length,3);
+  first.get("settings-toggle").click();const history=store.read().training;
+  first.get("auto-reveal").click();assert.equal(store.read().autoReveal,true);assert.deepEqual(store.read().training,history);
+  const restored=savedApp(memory);assert.equal(restored.get("auto-reveal").getAttribute("aria-checked"),"true");
+  restored.get("settings-toggle").click();restored.get("reset").click();assert.equal(store.read().autoReveal,true);
+  restored.get("settings-toggle").click();restored.get("auto-reveal").click();assert.equal(store.read().autoReveal,false);
+});
+test("V3.4 · Automatic full equations on wrong answers and timeouts retain miss scoring and feedback duration",()=>{
+  for(const timeout of [false,true]){
+    const memory=memoryStorage(),store=createStore(memory,sessionURL),app=savedApp(memory);
+    app.get("settings-toggle").click();app.get("auto-reveal").click();chooseOnly(app,10);changeFactorMode(app,"both");app.get("back-settings").click();
+    app.get("start").click();const stale=[...app.time.archive];
+    if(timeout)app.time.advance(6000);else app.answer(0);
+    assert.equal(app.get("equation").getAttribute("aria-label"),"10 × 10 = 100");
+    assert.equal(app.get("answer").textContent,timeout?"?":"0");
+    assert.equal(app.get("feedback-title").textContent,timeout?"⏱ TIDEN ÄR UTE":"✕ FEL");
+    const snapshot=store.read().training;assert.equal(snapshot.stats.correct,0);assert.equal(snapshot.stats.wrong,1);assert.equal(snapshot.history.find(p=>p.key==="10:10").streak,0);
+    stale.forEach(fn=>fn());assert.deepEqual(store.read().training,snapshot);
+    app.time.advance(1049);assert.equal(app.get("equation").children.length,5);app.time.advance(1);assert.equal(app.get("equation").children.length,3);
+    app.answer();assert.equal(app.get("equation").children.length,3);assert.equal(app.get("accuracy").textContent,"50%");
+  }
+});
+test("V3.4 · Pause, Settings, leaving and reset clear automatically revealed equations and cancel callbacks",()=>{
+  for(const action of ["pause","settings-toggle","away","reset"]){
+    const app=makeApp();app.get("settings-toggle").click();app.get("auto-reveal").click();app.get("back-settings").click();app.get("start").click();app.answer(0);
+    const stale=[...app.time.archive];
+    if(action==="away")app.emitWindow("pagehide");
+    else if(action==="reset"){app.get("settings-toggle").click();app.get("reset").click();}
+    else app.get(action).click();
+    stale.forEach(fn=>fn());assert.equal(app.get("equation").children.length,3);assert.equal(app.time.tasks.size,0);assert.equal(app.get("answer").textContent,"?");
+  }
+});
+// Synthetic heights test the controller independently of the CSS engine. They
+// do not claim browser layout measurements; physical phone QA is still needed.
+const layoutFixture=height=>({height,heights:{"":830,compact:700,tight:600,small:510}});
+test("V3.4 · Fit chooses the roomiest layout using visible height and safe-area padding",()=>{
+  for(const [height,expected] of [[900,""],[800,"compact"],[650,"tight"],[568,"small"]]){
+    const app=makeApp(["sv"],null,null,null,320,layoutFixture(height)),root=app.doc.getElementById("multipuls-v3");
+    assert.equal(root.dataset.density,expected);assert.equal(app.doc.root.dataset.mpFitted,"true");
+    const stable=root.getBoundingClientRect().height;app.get("start").click();app.get("pause").click();assert.equal(root.getBoundingClientRect().height,stable);
+  }
+  const fixture=layoutFixture(650);fixture.safeTop=47;fixture.safeBottom=34;
+  const app=makeApp(["sv"],null,null,null,390,fixture);assert.equal(app.doc.getElementById("multipuls-v3").dataset.density,"small");
+});
+test("V3.4 · Visible-height changes refit equations without touching timers or scores; zoom remains usable",()=>{
+  const memory=memoryStorage(),store=createStore(memory,sessionURL),app=makeApp(["sv"],null,store,null,390,layoutFixture(900));revealSquare(app,10);
+  const saved=memory.getItem(store.key),tasks=[...app.time.tasks.keys()],root=app.doc.getElementById("multipuls-v3"),view=app.window.visualViewport;
+  view.height=650;view.listeners.resize.forEach(fn=>fn());assert.equal(root.dataset.density,"tight");
+  assert.equal(memory.getItem(store.key),saved);assert.deepEqual([...app.time.tasks.keys()],tasks);
+  assert(revealedWidth(app)<=app.get("equation").getBoundingClientRect().width-1);
+  view.scale=2;view.height=325;view.listeners.resize.forEach(fn=>fn());assert.equal(root.dataset.density,"tight");assert.equal(app.doc.root.dataset.mpFitted,"false");
+  app.get("settings-toggle").click();assert.equal(root.dataset.screen,"settings");assert.equal(root.dataset.density,"");
+});
+test("V3.4 · Settings/results scroll normally; undersized or zoomed views never clip controls",()=>{
+  const fixture=layoutFixture(400);fixture.visual=false;
+  const app=makeApp(["sv"],null,null,null,390,fixture),root=app.doc.getElementById("multipuls-v3");
+  assert.equal(root.dataset.density,"small");assert.equal(app.doc.root.dataset.mpFitted,"false");
+  app.get("settings-toggle").click();assert.equal(root.dataset.screen,"settings");assert.equal(root.dataset.density,"");
+  chooseOnly(app,1);changeFactorMode(app,"both");app.get("back-settings").click();app.get("start").click();
+  for(let i=0;i<3;i++){app.answer();app.time.advance(1100);}
+  assert.equal(root.dataset.screen,"results");assert.equal(root.dataset.density,"");assert.equal(app.doc.root.dataset.mpFitted,"false");
+});
+test("V3.4 · CSS reserves the hidden Pause button and touch-size controls without a clipped page",()=>{
+  assert(/\.mp-pause-button\[hidden\]\s*\{[^}]*display:\s*flex\s*!important;[^}]*visibility:\s*hidden/.test(styles));
+  assert(/\.mp-timer-heading\s*\{[^}]*min-height:\s*44px/.test(styles));
+  assert([...styles.matchAll(/--mp-key-height:\s*(\d+)px/g)].every(match=>Number(match[1])>=44));
+  assert([...styles.matchAll(/--mp-status-height:\s*(\d+)px/g)].every(match=>Number(match[1])>=46));
+  assert(styles.includes('html[data-mp-fitted="true"] body { touch-action: pinch-zoom; }'));
+  assert(!/(?:html|body|#multipuls-v3)\s*\{[^}]*overflow(?:-y)?:\s*(?:hidden|clip)/.test(styles));
+});
+
 async function finishTests(){
   for(const {name,fn} of asyncTests){try{await fn();reports.push({name,status:"PASS"});}catch(error){reports.push({name,status:"FAIL",message:error.stack});}}
   for(const report of reports)console.log(report.status+" "+report.name+(report.message?"\n"+report.message:""));
-  fs.writeFileSync(path.join(__dirname,"training-results.json"),JSON.stringify({version:"v3.3",method:"Deterministic Node VM tests with parsed markup, DOM and text-geometry doubles, and stubbed device-sharing APIs. No browser execution or real messages sent.",tests:reports},null,2));
-  fs.writeFileSync(path.join(__dirname,"equation-layout-review.json"),JSON.stringify({version:"v3.3",method:"The shipped fitting function executes against a deterministic DOM geometry double. These are simulated widths, not browser or device font measurements. The published app measures its actual rendered spans using getBoundingClientRect and computed styles.",checks:layoutReports},null,2));
+  fs.writeFileSync(path.join(__dirname,"training-results.json"),JSON.stringify({version:"v3.4",method:"Deterministic Node VM tests with parsed markup, DOM and text-geometry doubles, and stubbed device-sharing APIs. No browser execution or real messages sent.",tests:reports},null,2));
+  fs.writeFileSync(path.join(__dirname,"equation-layout-review.json"),JSON.stringify({version:"v3.4",method:"The shipped fitting function executes against a deterministic DOM geometry double. These are simulated widths, not browser or device font measurements. The published app measures its actual rendered spans using getBoundingClientRect and computed styles.",checks:layoutReports},null,2));
   const failed=reports.filter(report=>report.status==="FAIL").length;console.log("\n"+(reports.length-failed)+"/"+reports.length+" passed");if(failed)process.exitCode=1;
 }
 finishTests().catch(error=>{console.error(error);process.exitCode=1;});

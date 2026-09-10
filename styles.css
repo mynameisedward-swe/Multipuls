@@ -5,7 +5,7 @@ body { background: #111c1e; margin: 0; padding: max(12px, env(safe-area-inset-to
 #multipuls-v3 {
     --mp-bg: #111c1e; --mp-panel: #1b292c; --mp-key: #243538; --mp-key-hover: #30464a;
     --mp-text: #f6f8ee; --mp-muted: #adbebc; --mp-line: #35474a; --mp-lime: #d0f88b;
-    --mp-green: #aff3bd; --mp-red: #ffb0b6;
+    --mp-green: #aff3bd; --mp-red: #ffb0b6; --mp-equation-size: 79px;
     color-scheme: dark; width: 100%; max-width: 476px; box-sizing: border-box; margin: 0 auto;
     padding: 20px; border-radius: 28px; background: radial-gradient(ellipse at 5% 0%, #243b33 0%, transparent 46%), var(--mp-bg);
     color: var(--mp-text); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -40,7 +40,8 @@ body { background: #111c1e; margin: 0; padding: max(12px, env(safe-area-inset-to
   #multipuls-v3 .mp-mastery-track { height: 5px; margin-top: 12px; background: #2b3d3a; border-radius: 5px; overflow: hidden; }
   #multipuls-v3 .mp-mastery-track > div { height: 100%; width: 0; border-radius: inherit; background: var(--mp-lime); transition: width .3s ease; }
   #multipuls-v3 .mp-question-card { background: linear-gradient(145deg, #20312f, var(--mp-panel)); border-radius: 22px; padding: 16px 18px 0; transition: background .15s ease; }
-  #multipuls-v3 .mp-timer-heading { display: flex; align-items: center; justify-content: space-between; gap: 8px; color: var(--mp-muted); font-size: 12px; }
+  #multipuls-v3 .mp-timer-heading { display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 44px; color: var(--mp-muted); font-size: 12px; }
+  #multipuls-v3 .mp-pause-button[hidden] { display: flex !important; visibility: hidden; pointer-events: none; }
   #multipuls-v3 .mp-time { color: var(--mp-lime); font-variant-numeric: tabular-nums; min-width: 44px; text-align: right; }
   #multipuls-v3 .mp-time-actions { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
   #multipuls-v3 .mp-pause-button { display: flex; align-items: center; gap: 5px; min-height: 44px; padding: 0 9px; background: #17282a; border: 1px solid var(--mp-line); border-radius: 11px; color: var(--mp-text); font-size: 12px; }
@@ -136,7 +137,7 @@ body { background: #111c1e; margin: 0; padding: max(12px, env(safe-area-inset-to
     #multipuls-v3 .mp-key[data-key="submit"]:hover:not(:disabled), #multipuls-v3 .mp-primary:hover { background: #e1ffb5; }
   }
   @media (max-width: 370px) {
-    #multipuls-v3 { padding: 14px; border-radius: 22px; }
+    #multipuls-v3 { padding: 14px; border-radius: 22px; --mp-equation-size: 66px; }
     #multipuls-v3 .mp-header { margin-bottom: 18px; }
     #multipuls-v3 .mp-brand { gap: 7px; }
     #multipuls-v3 .mp-logo { width: 36px; height: 36px; }
@@ -149,6 +150,46 @@ body { background: #111c1e; margin: 0; padding: max(12px, env(safe-area-inset-to
     #multipuls-v3 .mp-question-top { margin-top: 16px; letter-spacing: 1px; }
     #multipuls-v3 .mp-key { min-height: 53px; }
     #multipuls-v3 .mp-footnote { font-size: 11px; }
+  }
+  /* Height fitting changes spacing first. Settings and results keep normal flow. */
+  html[data-mp-fitted="true"] { overscroll-behavior-y: none; }
+  html[data-mp-fitted="true"] body { touch-action: pinch-zoom; }
+  #multipuls-v3:is([data-density="compact"], [data-density="tight"], [data-density="small"]) {
+    padding-block: 8px; --mp-header-gap: 8px; --mp-section-gap: 8px; --mp-track-gap: 6px;
+    --mp-card-top: 8px; --mp-timer-gap: 4px; --mp-question-gap: 8px;
+    --mp-answer-height: 54px; --mp-status-height: 52px; --mp-key-height: 48px; --mp-key-gap: 6px; --mp-footer-gap: 6px;
+  }
+  #multipuls-v3:is([data-density="tight"], [data-density="small"]) {
+    padding-block: 4px; --mp-header-gap: 4px; --mp-section-gap: 4px; --mp-track-gap: 4px;
+    --mp-card-top: 4px; --mp-timer-gap: 2px; --mp-question-gap: 4px; --mp-equation-size: 60px;
+    --mp-answer-height: 50px; --mp-status-height: 48px; --mp-key-height: 44px; --mp-key-gap: 4px; --mp-footer-gap: 4px;
+  }
+  #multipuls-v3[data-density="small"] { padding-block: 2px; --mp-header-gap: 2px; --mp-section-gap: 2px; --mp-equation-size: 50px; --mp-status-height: 46px; }
+  html[data-mp-density="small"] body { padding-top: max(4px, env(safe-area-inset-top)); padding-bottom: max(4px, env(safe-area-inset-bottom)); }
+  #multipuls-v3[data-density]:not([data-density=""]) .mp-header { margin-bottom: var(--mp-header-gap); }
+  #multipuls-v3[data-density]:not([data-density=""]) .mp-overview { margin-bottom: var(--mp-section-gap); }
+  #multipuls-v3[data-density]:not([data-density=""]) .mp-mastery-track { margin-top: var(--mp-track-gap); }
+  #multipuls-v3[data-density]:not([data-density=""]) .mp-question-card { padding-top: var(--mp-card-top); }
+  #multipuls-v3[data-density]:not([data-density=""]) .mp-timer-track { margin-top: var(--mp-timer-gap); }
+  #multipuls-v3[data-density]:not([data-density=""]) .mp-question-top { margin-top: var(--mp-question-gap); }
+  #multipuls-v3[data-density]:not([data-density=""]) .mp-equation { font-size: var(--mp-equation-size); padding-block: 4px; min-height: calc(var(--mp-equation-size) * 1.2 + 8px); }
+  #multipuls-v3[data-density]:not([data-density=""]) .mp-answer-box { min-height: var(--mp-answer-height); padding-block: 2px; }
+  #multipuls-v3[data-density]:not([data-density=""]) .mp-status { min-height: var(--mp-status-height); padding-block: 2px; }
+  #multipuls-v3[data-density]:not([data-density=""]) .mp-keypad { gap: var(--mp-key-gap); margin-top: var(--mp-section-gap); }
+  #multipuls-v3[data-density]:not([data-density=""]) .mp-key { min-height: var(--mp-key-height); }
+  #multipuls-v3[data-density]:not([data-density=""]) .mp-footnote { margin-top: var(--mp-footer-gap); }
+  #multipuls-v3[data-density="small"] .mp-metrics > div { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 4px; }
+  #multipuls-v3[data-density="small"] .mp-metrics > div:nth-child(2) { justify-content: center; }
+  #multipuls-v3[data-density="small"] .mp-metrics > div:last-child { justify-content: flex-end; }
+  #multipuls-v3[data-density="small"] .mp-label { font-size: 10px; margin: 0; }
+  #multipuls-v3[data-density="small"] .mp-metrics strong { font-size: 16px; }
+  #multipuls-v3[data-density="small"] .mp-footnote { display: none; }
+  @media (min-width: 600px) and (max-height: 600px) {
+    #multipuls-v3[data-screen="game"] { max-width: 780px; }
+    #multipuls-v3[data-screen="game"] .mp-play { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); column-gap: 12px; align-items: start; }
+    #multipuls-v3[data-screen="game"] .mp-keypad { margin-top: 0; }
+    #multipuls-v3[data-screen="game"] .mp-footnote { grid-column: 1 / -1; }
+    #multipuls-v3[data-density="small"] { --mp-equation-size: 40px; }
   }
   @keyframes mp-pop-v3 { 0% { transform: scale(.96); } 60% { transform: scale(1.035); } 100% { transform: scale(1); } }
   @keyframes mp-shake-v3 { 0%, 100% { transform: translateX(0); } 30% { transform: translateX(-4px); } 70% { transform: translateX(4px); } }

@@ -1,5 +1,5 @@
 {
-  "version": "v3.3",
+  "version": "v3.4",
   "method": "The shipped fitting function executes against a deterministic DOM geometry double. These are simulated widths, not browser or device font measurements. The published app measures its actual rendered spans using getBoundingClientRect and computed styles.",
   "checks": [
     {

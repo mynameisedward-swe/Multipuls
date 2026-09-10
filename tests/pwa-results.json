@@ -1,5 +1,5 @@
 {
-  "version": "v3.3",
+  "version": "v3.4",
   "method": "Static release checks and deterministic service-worker event tests with real Response/Request objects and in-memory Cache/Fetch doubles. No browser or network execution.",
   "tests": [
     {

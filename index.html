@@ -10,19 +10,19 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Multipuls">
   <title>Multipuls</title>
-  <link rel="manifest" href="./manifest.webmanifest?v=3.3">
+  <link rel="manifest" href="./manifest.webmanifest?v=3.4">
   <link rel="icon" type="image/png" href="./icons/icon-192.png">
   <link rel="apple-touch-icon" sizes="180x180" href="./icons/icon-180.png">
-  <link rel="stylesheet" href="./styles.css?v=3.3">
-  <script defer src="./storage.js?v=3.3"></script>
-  <script defer src="./app.js?v=3.3"></script>
-  <script defer src="./share.js?v=3.3"></script>
-  <script defer src="./pwa.js?v=3.3"></script>
+  <link rel="stylesheet" href="./styles.css?v=3.4">
+  <script defer src="./storage.js?v=3.4"></script>
+  <script defer src="./app.js?v=3.4"></script>
+  <script defer src="./share.js?v=3.4"></script>
+  <script defer src="./pwa.js?v=3.4"></script>
 </head>
 <body>
 <div id="multipuls-v3" lang="sv">
   <header class="mp-header">
-    <div class="mp-brand"><img class="mp-logo" data-ui="app-icon" width="42" height="42" alt="" aria-hidden="true" src="./assets/header-x-192.png"><div><strong>Multipuls</strong><div class="mp-brand-sub"><span data-i18n="tagline">Lär. Spela. Bemästra.</span> <small>v3.3</small></div></div></div>
+    <div class="mp-brand"><img class="mp-logo" data-ui="app-icon" width="42" height="42" alt="" aria-hidden="true" src="./assets/header-x-192.png"><div><strong>Multipuls</strong><div class="mp-brand-sub"><span data-i18n="tagline">Lär. Spela. Bemästra.</span> <small>v3.4</small></div></div></div>
     <div class="mp-top-actions">
       <button type="button" class="mp-icon-button" data-ui="share-toggle" data-i18n-aria="share" aria-label="Dela"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V3"/><path d="m7.5 7.5 4.5-4.5 4.5 4.5"/><path d="M5 11v8a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-8"/></svg></button>
       <button type="button" class="mp-icon-button" data-ui="settings-toggle" data-i18n-aria="settings" aria-label="Inställningar" aria-expanded="false" aria-controls="mp-v3-settings">⚙</button>
@@ -78,11 +78,6 @@
 
   <section id="mp-v3-settings" class="mp-settings mp-panel" data-ui="settings" hidden aria-labelledby="mp-v3-settings-title">
     <div class="mp-panel-heading"><div><h1 id="mp-v3-settings-title" data-i18n="settings">Inställningar</h1><p data-i18n="settingsSub">Anpassa hur du tränar</p></div><button type="button" class="mp-icon-button" data-ui="close-settings" data-i18n-aria="close" aria-label="Stäng">×</button></div>
-    <fieldset class="mp-language-setting">
-      <legend><label for="mp-v3-language" data-i18n="language">Språk</label></legend>
-      <p class="mp-setting-hint" data-i18n="languageSub">Väljs automatiskt första gången. Du kan ändra när du vill.</p>
-      <select id="mp-v3-language" data-ui="language" data-i18n-aria="language" aria-label="Språk"></select>
-    </fieldset>
     <fieldset>
       <legend data-i18n="tables">Multiplikationstabeller</legend>
       <div class="mp-selection-actions"><button type="button" class="mp-text-button" data-ui="select-all" data-i18n="selectAll">Välj alla</button><button type="button" class="mp-text-button" data-ui="select-hard" data-i18n="selectHard">Bara 6–9</button><span data-ui="selection-count">55 unika par</span></div>
@@ -109,6 +104,15 @@
       <legend data-i18n="masterTitle">Rätt i rad för att bemästra</legend>
       <div class="mp-goal-grid" data-ui="goals"></div>
       <p class="mp-setting-hint" data-i18n="masterHint">Ett fel nollställer parets svit. Klara par lämnar kön.</p>
+      <button type="button" class="mp-factor-toggle" data-ui="auto-reveal" role="switch" aria-checked="false" aria-labelledby="mp-v3-auto-reveal-label">
+        <span id="mp-v3-auto-reveal-label" data-i18n="autoReveal">Visa hela uträkningen vid fel</span>
+        <span class="mp-toggle-track" aria-hidden="true"></span>
+      </button>
+    </fieldset>
+    <fieldset class="mp-language-setting">
+      <legend><label for="mp-v3-language" data-i18n="language">Språk</label></legend>
+      <p class="mp-setting-hint" data-i18n="languageSub">Väljs automatiskt första gången. Du kan ändra när du vill.</p>
+      <select id="mp-v3-language" data-ui="language" data-i18n-aria="language" aria-label="Språk"></select>
     </fieldset>
     <p class="mp-change-note" data-i18n="settingsKept">Valen gäller direkt. Dina framsteg behålls.</p>
     <button type="button" class="mp-secondary mp-full" data-ui="back-settings" data-i18n="backToGame">Tillbaka till spelet</button>

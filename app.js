@@ -1125,6 +1125,15 @@
       revealAnswer:"显示答案（记为答错）",answerRevealed:"已显示答案"}
   };
   for (const [language,values] of Object.entries(PRACTICE_TEXT)) Object.assign(I18N[language],values);
+  const AUTO_REVEAL_LABELS={
+    en:"Show full equation after mistakes", sv:"Visa hela uträkningen vid fel",
+    es:"Mostrar la operación completa al fallar", de:"Bei Fehlern die vollständige Rechnung zeigen",
+    fr:"Afficher le calcul complet en cas d’erreur", it:"Mostra il calcolo completo dopo un errore",
+    pt:"Mostrar a conta completa após erros", nl:"Toon de volledige som na fouten",
+    pl:"Pokaż całe działanie po błędzie", ru:"Показывать полный пример при ошибке",
+    ja:"間違えたら答えを含む式を表示", ko:"틀리면 정답을 포함한 식 표시", zh:"答错时显示完整算式"
+  };
+  for (const [language,label] of Object.entries(AUTO_REVEAL_LABELS)) I18N[language].autoReveal=label;
   // The same pure rules can be tested in Node without changing the app source.
   if (typeof module!=="undefined" && module.exports) { module.exports={Training,SafeClock,createPairs,pairWeight,choosePair,normalizeConfig,DEFAULTS,LEVELS,I18N,LANGUAGE_NAMES,detectLanguage}; return; }
 
@@ -1140,7 +1149,7 @@
   const sessionStore=root.multipulsStore || null;
   const saveNotice=get("save-notice");
   const preferredLanguages=typeof navigator!=="undefined" ? (navigator.languages && navigator.languages.length ? [...navigator.languages] : [navigator.language || "en"]) : ["sv"];
-  const state={phase:"ready",input:"",settingsOpen:false,shareBusy:false,shareNotice:"",shareLink:"",language:detectLanguage(preferredLanguages),elapsed:0,startedAt:null,lastResult:null,pauseReason:null};
+  const state={phase:"ready",input:"",settingsOpen:false,shareBusy:false,shareNotice:"",shareLink:"",language:detectLanguage(preferredLanguages),autoReveal:false,elapsed:0,startedAt:null,lastResult:null,pauseReason:null};
   const t=(key,values={})=>Object.entries(values).reduce((text,[name,value])=>text.replaceAll("{"+name+"}",String(value)),I18N[state.language][key] || I18N.en[key] || key);
   const formatSeconds=ms=>(ms/1000).toLocaleString(state.language,{minimumFractionDigits:1,maximumFractionDigits:1})+" s";
   const percentage=()=>training.stats.questions ? Math.round(training.stats.correct/training.stats.questions*100)+"%" : "—";
@@ -1158,6 +1167,7 @@
       if (!["ready","paused","finished"].includes(saved.phase) || !Object.hasOwn(I18N,saved.language)) throw new Error("Invalid saved session");
       training.restore(saved.training);
       state.language=saved.language;
+      state.autoReveal=saved.autoReveal===true;
       state.phase=saved.phase==="ready" && training.turn===0 ? "ready" : saved.phase==="finished" && training.complete ? "finished" : "paused";
       const previous=training.history.get(training.previousKey);
       renderEquation(previous || {a:training.config.tables[0],b:8});
@@ -1165,7 +1175,7 @@
   }
   function saveSession() {
     if (!sessionStore) return;
-    sessionStore.write({language:state.language,phase:state.phase==="ready" ? "ready" : state.phase==="finished" ? "finished" : "paused",training:training.snapshot()});
+    sessionStore.write({language:state.language,autoReveal:state.autoReveal,phase:state.phase==="ready" ? "ready" : state.phase==="finished" ? "finished" : "paused",training:training.snapshot()});
     saveNotice.hidden=!sessionStore.issue;
     saveNotice.textContent=sessionStore.issue ? t(sessionStore.issue) : "";
   }
@@ -1245,6 +1255,29 @@
     if (state.phase==="finished") renderResults();
     renderShareNotice();
     saveSession();
+    fitGameLayout();
+  }
+  // Choose the roomiest natural-height layout that fits the visible phone area.
+  // Never clip controls or shrink the page in response to accessibility zoom.
+  function fitGameLayout() {
+    if (!root.isConnected) return;
+    const viewport=window.visualViewport, height=viewport ? viewport.height : window.innerHeight;
+    if (!(height>0)) { fitRevealedEquation(); return; }
+    const page=document.documentElement;
+    page.dataset.mpFitted="false";
+    root.dataset.screen=state.settingsOpen ? "settings" : state.phase==="finished" ? "results" : "game";
+    if (root.dataset.screen!=="game") { root.dataset.density=""; page.dataset.mpDensity=""; return; }
+    if (viewport && Math.abs(viewport.scale-1)>.01) return;
+    root.dataset.density=""; page.dataset.mpDensity="";
+    for (const density of ["","compact","tight","small"]) {
+      root.dataset.density=density; page.dataset.mpDensity=density;
+      const bodyStyle=window.getComputedStyle(document.body);
+      const padding=(parseFloat(bodyStyle.paddingTop)||0)+(parseFloat(bodyStyle.paddingBottom)||0);
+      if (root.getBoundingClientRect().height+padding<=height-2) {
+        page.dataset.mpFitted="true"; break;
+      }
+    }
+    fitRevealedEquation();
   }
   function fitRevealedEquation() {
     const equation=ui.equation;
@@ -1330,6 +1363,7 @@
     const result=training.score(questionId,reveal || state.input==="" ? null : Number(state.input),state.elapsed,expired);
     if (!result) return;
     if (reveal && !expired) { result.revealed=true; renderEquation(training.current,result.expected); }
+    else if (!result.correct && state.autoReveal) renderEquation(training.current,result.expected);
     state.lastResult=result; state.phase="feedback";
     renderTimer(limit ? Math.max(0,limit-state.elapsed) : 0); render();
     startFeedback(result.correct ? (result.newlyMastered ? 1000 : 800) : 1050);
@@ -1338,7 +1372,7 @@
     // End all active timers first. Never score a partially answered question.
     clock.cancel();
     if (state.phase==="question" || state.phase==="feedback") {
-      if (state.lastResult && state.lastResult.revealed) renderEquation(training.current);
+      if (ui.equation.dataset.revealed==="true") renderEquation(training.current);
       training.discardCurrent();
       state.phase="paused"; state.input=""; state.elapsed=0; state.startedAt=null; state.lastResult=null;
       state.pauseReason=reason;
@@ -1403,6 +1437,7 @@
     for (const button of ui.tables.children) button.setAttribute("aria-pressed",String(selected.has(Number(button.dataset.table))));
     for (const button of ui.goals.children) button.setAttribute("aria-pressed",String(Number(button.dataset.goal)===training.config.goal));
     ui.difficulty.value=training.config.difficulty;
+    get("auto-reveal").setAttribute("aria-checked",String(state.autoReveal));
     get("factor-mode").setAttribute("aria-checked",String(training.config.factorMode==="both"));
     get("factor-hint").textContent=t(training.config.factorMode==="both" ? "factorBothHint" : "factorAnyHint");
     ui["selection-count"].textContent=t("pairsCount",{n:training.pairs.length});
@@ -1416,7 +1451,7 @@
   function openSettings() {
     if (state.settingsOpen) { closeSettings(); return; }
     pause("settings"); state.settingsOpen=true;
-    renderSettings(); render(); ui.language.focus({preventScroll:true});
+    renderSettings(); render(); ui["close-settings"].focus({preventScroll:true});
   }
   function closeSettings() {
     if (!state.settingsOpen) return;
@@ -1445,6 +1480,7 @@
   ui["select-hard"].addEventListener("click",()=>updateConfig({tables:[6,7,8,9]}));
   ui.difficulty.addEventListener("change",()=>updateConfig({difficulty:ui.difficulty.value}));
   get("factor-mode").addEventListener("click",()=>updateConfig({factorMode:training.config.factorMode==="both" ? "any" : "both"}));
+  get("auto-reveal").addEventListener("click",()=>{ state.autoReveal=!state.autoReveal; renderSettings(); render(); });
   ui["settings-toggle"].addEventListener("click",openSettings);
   ui["close-settings"].addEventListener("click",closeSettings);
   ui["back-settings"].addEventListener("click",closeSettings);
@@ -1487,7 +1523,9 @@
   window.addEventListener("blur",()=>pause("away"));
   window.addEventListener("pagehide",()=>pause("away"));
   window.addEventListener("pageshow",event=>{ if (event.persisted) pause("away"); });
-  window.addEventListener("resize",fitRevealedEquation);
+  window.addEventListener("resize",fitGameLayout);
+  if (window.visualViewport) window.visualViewport.addEventListener("resize",fitGameLayout);
+  if (document.fonts) document.fonts.ready.then(fitGameLayout);
   restoreSession();
   applyLanguage();
 })();
